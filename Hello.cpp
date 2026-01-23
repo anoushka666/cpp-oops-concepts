@@ -1,45 +1,39 @@
 #include<iostream>
-#include<string>
 #include<string.h>
+#include<string>
 using namespace std;
-class String{
+class BankAccount{
     private:
-    char *s;
-    int size;
+    char *accountHolder;
+    double balance;
 
     public:
-    //parameterized constructor
-    String(const char *b){
-        size = strlen(b);
-        s = new char[size+1]; 
-        //dynamic memory allocation
-        //[size+1] for '/0'
-        strcpy(s, b);
+//parametrized constructor
+    BankAccount(const char *a, double b){
+        balance = b;
+        accountHolder = new char[strlen(a) +1];
+        strcpy(accountHolder, a);
     }
-
-    //copy constructor
-    String(const String &obj){
-        size = obj.size;
-        s = new char[size+1];
-        strcpy(s, obj.s);
+//copy constructor
+    BankAccount(const BankAccount &b1){
+        balance = b1.balance;
+        accountHolder = new char(strlen(b1.accountHolder)+1);
+        strcpy(accountHolder, b1.accountHolder);
     }
-
-    //destructor
-    ~String(){
-        delete[] s;
+//destructor
+    ~BankAccount(){
+        delete[] accountHolder;
     }
-
+//member function to print details
     void print(){
-        cout<<"string = "<<s<<endl;
-        cout<<"length = "<<size<<endl;
+        cout<<"Name: "<<accountHolder<<endl;
+        cout<<"Balance: "<<balance<<endl;
     }
 };
 int main(){
-    String s1("Hello");
-    s1.print();
+    BankAccount b1("Anoushka", 50000);
+    b1.print();
 
-    String s2 = s1;
-    s2.print();
-
-
+    BankAccount b2 = b1;
+    b2.print();
 }
