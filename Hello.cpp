@@ -1,31 +1,45 @@
 #include<iostream>
 #include<string>
+#include<string.h>
 using namespace std;
-
-class Wall{
+class String{
     private:
-    int length;
-    int height;
+    char *s;
+    int size;
 
     public:
-    Wall(int l, int h){
-        length = l;
-        height = h;
-    }
-    Wall(const Wall &w){
-        length = w.length;
-        height = w.height;
+    //parameterized constructor
+    String(const char *b){
+        size = strlen(b);
+        s = new char[size+1]; 
+        //dynamic memory allocation
+        //[size+1] for '/0'
+        strcpy(s, b);
     }
 
-    int area(){
-        return length*height;
+    //copy constructor
+    String(const String &obj){
+        size = obj.size;
+        s = new char[size+1];
+        strcpy(s, obj.s);
+    }
+
+    //destructor
+    ~String(){
+        delete[] s;
+    }
+
+    void print(){
+        cout<<"string = "<<s<<endl;
+        cout<<"length = "<<size<<endl;
     }
 };
 int main(){
-    Wall w1(5,6);
-    cout<<"Area is = "<<w1.area()<<endl;
-    Wall w2(w1);
-    cout<<"Area (copied) is = "<<w2.area()<<endl;
+    String s1("Hello");
+    s1.print();
+
+    String s2 = s1;
+    s2.print();
 
 
 }
