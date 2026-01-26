@@ -1,38 +1,46 @@
 #include<iostream>
-#include<string>
 using namespace std;
-class Bank{
-    private: 
-    string name;
-    int acc_no;
-    double balance;
+class Vector{
+    private:
+    int size;
+    float v[100];
 
     public:
-    void assign(string n, int a, double b){
-        name = n;
-        acc_no = a;
-        balance = b;
-    }
-    void deposit(double amount){
-        balance+= amount;
-    }
-    void withdraw(double amount){
-        if(balance<amount){
-            cout<<"Not sufficient money"<<endl;
+    void assign(int n){
+        size = n;
+        cout<<"Enter "<<size<<" elements: "<<endl;
+        for (int i=0; i<size; i++){
+            cin>>v[i];
         }
-        else {
-            balance-= amount;
+    }
+
+    void add(int s){
+        for (int i=0; i<size; i++){
+            v[i]+=s;
+        }
+    }
+    void multiply(int s){
+        for (int i=0; i<size; i++){
+            v[i]*=s;
         }
     }
     void display(){
-        cout<<"Name: "<<name<<endl;
-        cout<<"Balance: "<<balance<<endl;
+        for (int i=0; i<size; i++){
+            cout<<v[i]<<" ";
+        }
     }
+  
 };
 int main(){
-    Bank b1;
-    b1.assign("Anoushka", 239, 1000);
-    b1.deposit(500);
-    b1.withdraw(5000);
-    b1.display();
+    Vector v1;
+    v1.assign(3);
+    cout<<endl<<"Vector elements: "<<endl;
+    v1.display();
+    v1.add(10);
+    cout<<endl<<"Updated Vector elements: "<<endl;
+    v1.display();
+    v1.multiply(5);
+    cout<<endl<<"Updated Vector elements: "<<endl;
+    v1.display();
+
 }
