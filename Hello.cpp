@@ -2,19 +2,16 @@
 using namespace std;
 int main(){
     int n;
-    cout<<"Enter no. of students: ";
+    cout<<"Enter no. of elements: ";
     cin>>n;
 
-    float *cgpa = new float[n];
-
+    int arr[n];
+    cout<<"Enter elements: "<<endl;
+    int sum=0;
     for (int i=0; i<n; i++){
-        cout<<"Enter cgpa of student "<<i+1<<": ";
-        cin>>cgpa[i];
+        cin>>arr[i];
+        sum += arr[i];
     }
+    cout<<"Sum of elements: "<<sum;
 
-    for (int i=0; i<n; i++){
-        cout<<"CGPA of student "<<i+1<<": "<<cgpa[i]<<endl;
-    }
-
-    delete[] cgpa;
 }
