@@ -1,22 +1,20 @@
 #include<iostream>
 using namespace std;
 int main(){
-    int A[3] = {10, 100, 200};
-    int *ptr = A;
+    int n;
+    cout<<"Enter no. of students: ";
+    cin>>n;
 
-    cout<<"After increment operator: "<<endl;
-    for (int i=0; i<3; i++){
-        cout<<"Address of var["<<i<<"] "<<ptr<<endl;
-        cout<<"Value of var["<<i<<"]" <<*ptr<<endl;
-        ptr++;
+    float *cgpa = new float[n];
+
+    for (int i=0; i<n; i++){
+        cout<<"Enter cgpa of student "<<i+1<<": ";
+        cin>>cgpa[i];
     }
 
-    cout<<"After decrement operator: "<<endl;
-    for (int i=2; i>=0; i--){
-        cout<<"Address of var["<<i<<"] "<<ptr<<endl;
-        cout<<"Value of var["<<i<<"]" <<*ptr<<endl;
-        ptr--;
+    for (int i=0; i<n; i++){
+        cout<<"CGPA of student "<<i+1<<": "<<cgpa[i]<<endl;
     }
 
-
+    delete[] cgpa;
 }
