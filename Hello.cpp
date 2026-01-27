@@ -6,7 +6,7 @@ class Vector{
     float v[100];
 
     public:
-//to assign values
+//to assign vector values
     void assign(int n){
         size = n;
         cout<<"Enter "<<size<<" elements: "<<endl;
@@ -15,17 +15,19 @@ class Vector{
         }
     }
 
-//to add by a scalar
+//to add a scalar
     void add(int s){
         for (int i=0; i<size; i++){
             v[i]+=s;
         }
     }
+//to multiply by a scalar
     void multiply(int s){
         for (int i=0; i<size; i++){
             v[i]*=s;
         }
     }
+//to display the vectors
     void display(){
         for (int i=0; i<size; i++){
             cout<<v[i]<<" ";
@@ -46,4 +48,5 @@ int main(){
     v1.display();
 
 }
+
 
