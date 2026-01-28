@@ -10,31 +10,35 @@ private:
     char* name;
 
 public:
+//parametrized constructor 
     StudentRecord(int r, const char* n, int s) {
         rollNo = r;
         numSubjects = s;
 
-        name = new char[strlen(n) + 1];
+        name = new char[strlen(n) + 1];  //memory allocation for string 
         strcpy(name, n);
 
-        marks = new float[numSubjects];
+        marks = new float[numSubjects];  //memory allocation for array 
         for (int i = 0; i < numSubjects; i++)
             marks[i] = 0;
-    }
+    
+}
+
+//destructor
 
     ~StudentRecord() {
         delete[] name;
         delete[] marks;
         cout << "Memory freed!" << endl;
     }
-
+//function to input marks
     void readMarks() {
         for (int i = 0; i < numSubjects; i++) {
             cout << "Enter marks for subject " << i + 1 << ": ";
             cin >> marks[i];
         }
     }
-
+//function to show details of student 
     void showDetails() const {
         float total = 0;
 
@@ -49,7 +53,7 @@ public:
         cout << "Total: " << total << endl;
         cout << "Percentage: " << (total / numSubjects) << "%" << endl;
     }
-
+//function to return highest mark of student
     float getHighestMark() const {
         if (numSubjects <= 0)
             return -1;
@@ -70,6 +74,7 @@ int main() {
     cout << "Highest Marks: " << s1->getHighestMark() << endl;
     s1->showDetails();
 
-    delete s1;
+    delete s1; //deleting the object
     return 0;
 }
+
