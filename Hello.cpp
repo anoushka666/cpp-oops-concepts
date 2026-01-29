@@ -1,57 +1,66 @@
 #include<iostream>
 using namespace std;
-class Box{
+class Employee{
+    private:
+    int *id;
+    string *name;
+
+
     public:
-    int boxes;
-    int choice;
-    int *capacity;
+    int n;
+    Employee(){
+        cout<<"Enter number of employees: ";
+        cin>>n;
 
-    Box(){
-        cout<<"Enter number of boxes: ";
-        cin>>boxes;
-        capacity = new int[boxes];
+        name = new string[n];
+        id = new int[n];
 
-        for (int i=0; i<boxes; i++){
-            cout<<"Box "<<i+1<<": "<<endl;
-            cout<<"1. Default capacity(50)"<<endl;
-            cout<<"2. Custom choice"<<endl;
-            cout<<"Enter choice: ";
-            cin>>choice;
 
-            if (choice==1){
-                capacity[i] = 50;
+        for (int i=0; i<n; i++){
+            cout<<endl<<"Enter payroll ID for employee "<<i+1<<": ";
+            cin>>id[i];
+            cout<<"Enter employee name: ";
+            cin>>name[i];}
+            int high = id[0];
+            int low = id[0];
+        for (int i=1; i<n; i++){
+            if(id[i]>high){
+                high = id[i];
             }
-            if(choice==2){
-                cout<<"Enter custom capacity: ";
-                cin>>capacity[i];
+            if (id[i]<low){
+                low = id[i];
             }
+
+        }
+
+    cout<<endl<<"~~EMPLOYEE REGISTER~"<<endl;
+    for (int i=0; i<n; i++){
+        cout<<"Payroll ID: "<<id[i]<<"\t"<<"Name: "<<name[i]<<endl;
+    }
+
+    int find;
+    cout<<"Enter payroll ID to search: ";
+    cin>>find;
+
+    for (int i=0; i<n; i++){
+        if (find==id[i]){
+            cout<<"Employee found"<<endl;
+            cout<<"Payroll ID: "<<id[i]<<"\t"<<"Name: "<<name[i];
+        }
+
         }
     
-  
-        int total=0;
-        int maxbox=0;
-        int max = capacity[0];
-        cout<<endl<<"Box capacities: "<<endl;
-        for (int i=0; i<boxes; i++){
-            cout<<"Box "<<i+1<<": "<<capacity[i]<<endl;
-            total += capacity[i];
-            if(capacity[i]>max){
-                max = capacity[i];
-                maxbox = i;
-            }
-        }
-        cout<<"Total capacity: "<<total<<endl;;
-        cout<<"Average box capacity: "<<(float)total/boxes<<endl;
-        cout<<"Box with maximum capacity: "<<"Box "<<maxbox+1<<"("<<max<<")"<<endl;
+    cout<<endl<<"Highest payroll ID: "<<high<<endl;
+    cout<<endl<<"Lowest payroll ID: "<<low<<endl;
     }
+    
+    
+~Employee(){
+    delete[]id;
+    delete[]name;
+}
 
-    ~Box(){
-        delete[]capacity;
-        cout<<"Memory released successfully";
-    }
 };
-
 int main(){
-    Box b1;
-    
+    Employee e1;
 }
