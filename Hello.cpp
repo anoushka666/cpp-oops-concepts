@@ -1,80 +1,57 @@
-#include <iostream>
-#include <cstring>
+#include<iostream>
 using namespace std;
+class Box{
+    public:
+    int boxes;
+    int choice;
+    int *capacity;
 
-class StudentRecord {
-private:
-    int rollNo;
-    int numSubjects;
-    float* marks;
-    char* name;
+    Box(){
+        cout<<"Enter number of boxes: ";
+        cin>>boxes;
+        capacity = new int[boxes];
 
-public:
-//parametrized constructor 
-    StudentRecord(int r, const char* n, int s) {
-        rollNo = r;
-        numSubjects = s;
+        for (int i=0; i<boxes; i++){
+            cout<<"Box "<<i+1<<": "<<endl;
+            cout<<"1. Default capacity(50)"<<endl;
+            cout<<"2. Custom choice"<<endl;
+            cout<<"Enter choice: ";
+            cin>>choice;
 
-        name = new char[strlen(n) + 1];  //memory allocation for string 
-        strcpy(name, n);
-
-        marks = new float[numSubjects];  //memory allocation for array 
-        for (int i = 0; i < numSubjects; i++)
-            marks[i] = 0;
+            if (choice==1){
+                capacity[i] = 50;
+            }
+            if(choice==2){
+                cout<<"Enter custom capacity: ";
+                cin>>capacity[i];
+            }
+        }
     
-}
-
-//destructor
-
-    ~StudentRecord() {
-        delete[] name;
-        delete[] marks;
-        cout << "Memory freed!" << endl;
-    }
-//function to input marks
-    void readMarks() {
-        for (int i = 0; i < numSubjects; i++) {
-            cout << "Enter marks for subject " << i + 1 << ": ";
-            cin >> marks[i];
+  
+        int total=0;
+        int maxbox=0;
+        int max = capacity[0];
+        cout<<endl<<"Box capacities: "<<endl;
+        for (int i=0; i<boxes; i++){
+            cout<<"Box "<<i+1<<": "<<capacity[i]<<endl;
+            total += capacity[i];
+            if(capacity[i]>max){
+                max = capacity[i];
+                maxbox = i;
+            }
         }
+        cout<<"Total capacity: "<<total<<endl;;
+        cout<<"Average box capacity: "<<(float)total/boxes<<endl;
+        cout<<"Box with maximum capacity: "<<"Box "<<maxbox+1<<"("<<max<<")"<<endl;
     }
-//function to show details of student 
-    void showDetails() const {
-        float total = 0;
 
-        cout << "Name: " << name << endl;
-        cout << "Roll No: " << rollNo << endl;
-
-        for (int i = 0; i < numSubjects; i++) {
-            cout << "Marks of subject " << i + 1 << ": " << marks[i] << endl;
-            total += marks[i];
-        }
-
-        cout << "Total: " << total << endl;
-        cout << "Percentage: " << (total / numSubjects) << "%" << endl;
-    }
-//function to return highest mark of student
-    float getHighestMark() const {
-        if (numSubjects <= 0)
-            return -1;
-
-        float max = marks[0];
-        for (int i = 1; i < numSubjects; i++) {
-            if (marks[i] > max)
-                max = marks[i];
-        }
-        return max;
+    ~Box(){
+        delete[]capacity;
+        cout<<"Memory released successfully";
     }
 };
 
-int main() {
-    StudentRecord* s1 = new StudentRecord(239, "Anoushka", 3);
-
-    s1->readMarks();
-    cout << "Highest Marks: " << s1->getHighestMark() << endl;
-    s1->showDetails();
-
-    delete s1; //deleting the object
-    return 0;
+int main(){
+    Box b1;
+    
 }
-
