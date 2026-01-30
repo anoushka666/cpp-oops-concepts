@@ -64,5 +64,8 @@ class Employee{
 };
 int main(){
     Employee e1;
+    Empployee e2;
+    return 0;
 }
+
 
