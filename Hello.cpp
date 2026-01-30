@@ -8,6 +8,7 @@ class Employee{
 
     public:
     int n;
+//constructor
     Employee(){
         cout<<"Enter number of employees: ";
         cin>>n;
@@ -15,7 +16,7 @@ class Employee{
         name = new string[n];
         id = new int[n];
 
-
+//input details
         for (int i=0; i<n; i++){
             cout<<endl<<"Enter payroll ID for employee "<<i+1<<": ";
             cin>>id[i];
@@ -32,12 +33,12 @@ class Employee{
             }
 
         }
-
+//display all details
     cout<<endl<<"~~EMPLOYEE REGISTER~"<<endl;
     for (int i=0; i<n; i++){
         cout<<"Payroll ID: "<<id[i]<<"\t"<<"Name: "<<name[i]<<endl;
     }
-
+//search for an employee
     int find;
     cout<<"Enter payroll ID to search: ";
     cin>>find;
@@ -54,7 +55,7 @@ class Employee{
     cout<<endl<<"Lowest payroll ID: "<<low<<endl;
     }
     
-    
+  //destructor  
 ~Employee(){
     delete[]id;
     delete[]name;
@@ -64,3 +65,4 @@ class Employee{
 int main(){
     Employee e1;
 }
+
