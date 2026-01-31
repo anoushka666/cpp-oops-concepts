@@ -1,71 +1,42 @@
 #include<iostream>
 using namespace std;
-class Employee{
+class Matrix{
     private:
-    int *id;
-    string *name;
-
+    int rows;
+    int cols;
 
     public:
-    int n;
-//constructor
-    Employee(){
-        cout<<"Enter number of employees: ";
-        cin>>n;
-
-        name = new string[n];
-        id = new int[n];
-
-//input details
-        for (int i=0; i<n; i++){
-            cout<<endl<<"Enter payroll ID for employee "<<i+1<<": ";
-            cin>>id[i];
-            cout<<"Enter employee name: ";
-            cin>>name[i];}
-            int high = id[0];
-            int low = id[0];
-        for (int i=1; i<n; i++){
-            if(id[i]>high){
-                high = id[i];
-            }
-            if (id[i]<low){
-                low = id[i];
-            }
-
-        }
-//display all details
-    cout<<endl<<"~~EMPLOYEE REGISTER~"<<endl;
-    for (int i=0; i<n; i++){
-        cout<<"Payroll ID: "<<id[i]<<"\t"<<"Name: "<<name[i]<<endl;
-    }
-//search for an employee
-    int find;
-    cout<<"Enter payroll ID to search: ";
-    cin>>find;
-
-    for (int i=0; i<n; i++){
-        if (find==id[i]){
-            cout<<"Employee found"<<endl;
-            cout<<"Payroll ID: "<<id[i]<<"\t"<<"Name: "<<name[i];
-        }
+    
+    Matrix(int r, int c){
+        rows = r;
+        cols = c;
+        int **arr = new int*[rows];
+        for (int i=0; i<rows; i++){
+            arr[i] = new int[cols];
 
         }
     
-    cout<<endl<<"Highest payroll ID: "<<high<<endl;
-    cout<<endl<<"Lowest payroll ID: "<<low<<endl;
+
+        cout<<"Enter elements of the matrix: ";
+        for (int i=0; i<rows; i++){
+            for (int j=0; j<cols; j++){
+                cin>>arr[i][j];
+            }
+        }
+
+        cout<<"Matrix: "<<endl;
+        for (int i=0; i<rows; i++){
+            for (int j=0; j<cols; j++){
+                cout<<arr[i][j]<<" ";
+            }
+            cout<<endl;
+        }
+
     }
+
     
-  //destructor  
-~Employee(){
-    delete[]id;
-    delete[]name;
-}
 
 };
 int main(){
-    Employee e1;
-    Empployee e2;
-    return 0;
+    Matrix m1(3,3);
 }
-
-
