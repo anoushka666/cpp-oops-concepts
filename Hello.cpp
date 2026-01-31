@@ -1,3 +1,4 @@
+//dynamically allocate 2d array and display it 
 #include<iostream>
 using namespace std;
 class Matrix{
@@ -6,7 +7,7 @@ class Matrix{
     int cols;
 
     public:
-    
+    //parametrized constructor 
     Matrix(int r, int c){
         rows = r;
         cols = c;
@@ -16,14 +17,14 @@ class Matrix{
 
         }
     
-
+//input
         cout<<"Enter elements of the matrix: ";
         for (int i=0; i<rows; i++){
             for (int j=0; j<cols; j++){
                 cin>>arr[i][j];
             }
         }
-
+//display
         cout<<"Matrix: "<<endl;
         for (int i=0; i<rows; i++){
             for (int j=0; j<cols; j++){
@@ -40,3 +41,4 @@ class Matrix{
 int main(){
     Matrix m1(3,3);
 }
+
