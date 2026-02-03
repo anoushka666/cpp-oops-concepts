@@ -8,7 +8,7 @@ private:
     int **elements;
 
 public:
-    // Constructor
+
     Matrix(int r, int c) {
         rows = r;
         cols = c;
@@ -22,7 +22,7 @@ public:
         }
     }
 
-    // Destructor
+
     ~Matrix() {
         for (int i = 0; i < rows; i++) {
             delete[] elements[i];
@@ -30,22 +30,20 @@ public:
         delete[] elements;
     }
 
-    // Get number of rows
+  
     int getRows() {
         return rows;
     }
 
-    // Get number of columns
     int getCols() {
         return cols;
     }
 
-    // Set element at position (i, j)
+
     void setElement(int i, int j, int value) {
         elements[i][j] = value;
     }
 
-    // Add two matrices
     Matrix add(Matrix &m) {
         Matrix result(rows, cols);
         for (int i = 0; i < rows; i++) {
@@ -56,7 +54,7 @@ public:
         return result;
     }
 
-    // Multiply two matrices
+    
     Matrix multiply(Matrix &m) {
         Matrix result(rows, m.cols);
         for (int i = 0; i < rows; i++) {
@@ -69,7 +67,7 @@ public:
         return result;
     }
 
-    // Display matrix
+
     void display() {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
@@ -105,3 +103,4 @@ int main() {
 
     return 0;
 }
+
