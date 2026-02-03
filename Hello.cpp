@@ -10,7 +10,7 @@ private:
     int Number_of_buses;
 
 public:
-    // Constructor with initial values
+ 
     TravelPlan() {
         PlanCode = 1001;
         strcpy(Place, "Agra");
@@ -18,7 +18,7 @@ public:
         Number_of_buses = 1;
     }
 
-    // Function to accept new plan details
+
     void NewPlan() {
         cout << "Enter Plan Code: ";
         cin >> PlanCode;
@@ -37,7 +37,7 @@ public:
             Number_of_buses = 3;
     }
 
-    // Function to display plan details
+
     void ShowPlan() {
         cout << "\nPlan Code: " << PlanCode << endl;
         cout << "Place: " << Place << endl;
@@ -52,3 +52,4 @@ int main() {
     T.ShowPlan();
     return 0;
 }
+
