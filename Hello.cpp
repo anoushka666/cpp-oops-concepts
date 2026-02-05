@@ -2,26 +2,23 @@
 #include <iostream>
 using namespace std;
 
-/* =====================================
-   (a) Class Point – Constructor Overloading
-   ===================================== */
 class Point {
     int x, y;
 
 public:
-    // i. Default constructor (origin)
+   
     Point() {
         x = 0;
         y = 0;
     }
 
-    // ii. Parameterized constructor
+    
     Point(int a, int b) {
         x = a;
         y = b;
     }
 
-    // iii. Copy constructor
+    
     Point(Point &p) {
         x = p.x;
         y = p.y;
@@ -32,9 +29,7 @@ public:
     }
 };
 
-/* =====================================
-   (b) Class Distance – Friend Function
-   ===================================== */
+
 class Distance {
     int feet;
     int inches;
@@ -58,9 +53,6 @@ void compareDistance(Distance d1, Distance d2) {
         cout << "Second distance is larger" << endl;
 }
 
-/* =====================================
-   (c) Class Account – Fund Transfer
-   ===================================== */
 class Account {
     int accountNumber;
     float balance;
@@ -88,9 +80,7 @@ void transferFunds(Account &from, Account &to, float amount) {
     }
 }
 
-/* =====================================
-   (d) Class Time – Add Two Times
-   ===================================== */
+
 class Time {
     int hours, minutes, seconds;
 
@@ -120,12 +110,10 @@ Time addTime(Time t1, Time t2) {
     return result;
 }
 
-/* =====================================
-   Main Function
-   ===================================== */
+
 int main() {
 
-    // (a) Point
+   
     Point p1;
     Point p2(4, 5);
     Point p3(p2);
@@ -139,7 +127,7 @@ int main() {
     Distance d2(6, 2);
     compareDistance(d1, d2);
 
-    // (c) Account
+    
     Account a1(101, 5000);
     Account a2(102, 3000);
 
@@ -147,7 +135,7 @@ int main() {
     a1.display();
     a2.display();
 
-    // (d) Time
+  
     Time t1(2, 45, 50);
     Time t2(1, 20, 30);
 
@@ -156,3 +144,4 @@ int main() {
 
     return 0;
 }
+
