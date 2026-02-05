@@ -1,94 +1,158 @@
+
 #include <iostream>
 using namespace std;
 
-class Employee {
-    int empID;
-    float basicSalary;
+/* =====================================
+   (a) Class Point – Constructor Overloading
+   ===================================== */
+class Point {
+    int x, y;
 
 public:
-    
-    Employee() {
-        empID = 0;
-        basicSalary = 0;
+    // i. Default constructor (origin)
+    Point() {
+        x = 0;
+        y = 0;
     }
 
-    Employee(int id, float sal) {
-        empID = id;
-        basicSalary = sal;
+    // ii. Parameterized constructor
+    Point(int a, int b) {
+        x = a;
+        y = b;
     }
 
-    Employee(Employee &e) {
-        empID = e.empID;
-        basicSalary = e.basicSalary;
+    // iii. Copy constructor
+    Point(Point &p) {
+        x = p.x;
+        y = p.y;
     }
-
-   
-    friend void calculateNetSalary(Employee);
-    friend void transferEmployee(class Department &, class Department &);
-};
-
-
-void calculateNetSalary(Employee e) {
-    float allowance = e.basicSalary * 0.20; // 20%
-    float deduction = e.basicSalary * 0.10; // 10%
-    float netSalary = e.basicSalary + allowance - deduction;
-
-    cout << "\nEmployee ID: " << e.empID << endl;
-    cout << "Basic Salary: " << e.basicSalary << endl;
-    cout << "Allowance: " << allowance << endl;
-    cout << "Deduction: " << deduction << endl;
-    cout << "Net Salary: " << netSalary << endl;
-}
-
-class Department {
-    string deptName;
-    int totalEmployees;
-
-public:
-    Department(string name = "", int count = 0) {
-        deptName = name;
-        totalEmployees = count;
-    }
-
-    friend void transferEmployee(Department &, Department &);
 
     void display() {
-        cout << deptName << " Department Employees: "
-             << totalEmployees << endl;
+        cout << "Point (" << x << ", " << y << ")" << endl;
     }
 };
 
-void transferEmployee(Department &from, Department &to) {
-    if (from.totalEmployees > 0) {
-        from.totalEmployees--;
-        to.totalEmployees++;
+/* =====================================
+   (b) Class Distance – Friend Function
+   ===================================== */
+class Distance {
+    int feet;
+    int inches;
+
+public:
+    Distance(int f = 0, int i = 0) {
+        feet = f;
+        inches = i;
+    }
+
+    friend void compareDistance(Distance, Distance);
+};
+
+void compareDistance(Distance d1, Distance d2) {
+    int total1 = d1.feet * 12 + d1.inches;
+    int total2 = d2.feet * 12 + d2.inches;
+
+    if (total1 > total2)
+        cout << "First distance is larger" << endl;
+    else
+        cout << "Second distance is larger" << endl;
+}
+
+/* =====================================
+   (c) Class Account – Fund Transfer
+   ===================================== */
+class Account {
+    int accountNumber;
+    float balance;
+
+public:
+    Account(int acc, float bal) {
+        accountNumber = acc;
+        balance = bal;
+    }
+
+    friend void transferFunds(Account &, Account &, float);
+
+    void display() {
+        cout << "Account " << accountNumber
+             << " Balance: " << balance << endl;
+    }
+};
+
+void transferFunds(Account &from, Account &to, float amount) {
+    if (from.balance >= amount) {
+        from.balance -= amount;
+        to.balance += amount;
+    } else {
+        cout << "Insufficient balance!" << endl;
     }
 }
 
+/* =====================================
+   (d) Class Time – Add Two Times
+   ===================================== */
+class Time {
+    int hours, minutes, seconds;
 
+public:
+    Time(int h = 0, int m = 0, int s = 0) {
+        hours = h;
+        minutes = m;
+        seconds = s;
+    }
+
+    friend Time addTime(Time, Time);
+
+    void display() {
+        cout << hours << ":" << minutes << ":" << seconds << endl;
+    }
+};
+
+Time addTime(Time t1, Time t2) {
+    Time result;
+
+    result.seconds = t1.seconds + t2.seconds;
+    result.minutes = t1.minutes + t2.minutes + (result.seconds / 60);
+    result.seconds %= 60;
+    result.hours = t1.hours + t2.hours + (result.minutes / 60);
+    result.minutes %= 60;
+
+    return result;
+}
+
+/* =====================================
+   Main Function
+   ===================================== */
 int main() {
-    
-    Employee e1;
-    Employee e2(101, 30000);
-    Employee e3(e2);
 
+    // (a) Point
+    Point p1;
+    Point p2(4, 5);
+    Point p3(p2);
 
-    calculateNetSalary(e2);
+    p1.display();
+    p2.display();
+    p3.display();
 
+    // (b) Distance
+    Distance d1(5, 6);
+    Distance d2(6, 2);
+    compareDistance(d1, d2);
 
-    Department d1("IT", 5);
-    Department d2("HR", 3);
+    // (c) Account
+    Account a1(101, 5000);
+    Account a2(102, 3000);
 
-    cout << "\nBefore Transfer:" << endl;
-    d1.display();
-    d2.display();
+    transferFunds(a1, a2, 1000);
+    a1.display();
+    a2.display();
 
-    transferEmployee(d1, d2);
+    // (d) Time
+    Time t1(2, 45, 50);
+    Time t2(1, 20, 30);
 
-    cout << "\nAfter Transfer:" << endl;
-    d1.display();
-    d2.display();
+    Time t3 = addTime(t1, t2);
+    t3.display();
 
     return 0;
 }
-
