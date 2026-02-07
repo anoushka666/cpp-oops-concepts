@@ -1,53 +1,25 @@
 #include <iostream>
-#include <cstring>
+#include <string>
 using namespace std;
-
-class TravelPlan {
-private:
-    long PlanCode;
-    char Place[20];
-    int Number_of_travellers;
-    int Number_of_buses;
-
+class A{
+	mutable int a;
 public:
- 
-    TravelPlan() {
-        PlanCode = 1001;
-        strcpy(Place, "Agra");
-        Number_of_travellers = 5;
-        Number_of_buses = 1;
-    }
-
-  
-    void NewPlan() {
-        cout << "Enter Plan Code: ";
-        cin >> PlanCode;
-
-        cout << "Enter Place: ";
-        cin >> Place;
-
-        cout << "Enter Number of Travellers: ";
-        cin >> Number_of_travellers;
-
-        if (Number_of_travellers < 20)
-            Number_of_buses = 1;
-        else if (Number_of_travellers >= 20 && Number_of_travellers < 40)
-            Number_of_buses = 2;
-        else
-            Number_of_buses = 3;
-    }
-
-  
-    void ShowPlan() {
-        cout << "\nPlan Code: " << PlanCode << endl;
-        cout << "Place: " << Place << endl;
-        cout << "Number of Travellers: " << Number_of_travellers << endl;
-        cout << "Number of Buses: " << Number_of_buses << endl;
-    }
+	A(){
+		cout<<"A's default constructor called\n";
+	}
+	A(const A& a){
+		cout<<"A's copy Constructor called\n";
+	}
 };
-int main() {
-    TravelPlan T;
-    T.NewPlan();
-    T.ShowPlan();
-    return 0;
+class B{
+	A obj;
+public:
+	B(){
+		cout<<"B's Constructor called\n";
+	}
+};
+int main(int argc, char const *argv[])
+{
+	B b1;
+	B b2;
 }
