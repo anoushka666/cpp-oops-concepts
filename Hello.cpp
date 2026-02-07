@@ -1,107 +1,53 @@
 #include <iostream>
+#include <cstring>
 using namespace std;
 
-class Matrix {
+class TravelPlan {
 private:
-    int rows;
-    int cols;
-    int **data;
+    long PlanCode;
+    char Place[20];
+    int Number_of_travellers;
+    int Number_of_buses;
 
 public:
-    Matrix(int r, int c) {
-        rows = r;
-        cols = c;
-
-        data = new int*[rows];
-        for (int i = 0; i < rows; i++) {
-            data[i] = new int[cols];
-            for (int j = 0; j < cols; j++) {
-                data[i][j] = 0;
-            }
-        }
-    }
-
-    ~Matrix() {
-        for (int i = 0; i < rows; i++) {
-            delete[] data[i];
-        }
-        delete[] data;
-    }
-
-
-    int getRows() {
-        return rows;
-    }
-
  
-    int getCols() {
-        return cols;
+    TravelPlan() {
+        PlanCode = 1001;
+        strcpy(Place, "Agra");
+        Number_of_travellers = 5;
+        Number_of_buses = 1;
     }
 
-   
-    void setElement(int i, int j, int value) {
-        data[i][j] = value;
+  
+    void NewPlan() {
+        cout << "Enter Plan Code: ";
+        cin >> PlanCode;
+
+        cout << "Enter Place: ";
+        cin >> Place;
+
+        cout << "Enter Number of Travellers: ";
+        cin >> Number_of_travellers;
+
+        if (Number_of_travellers < 20)
+            Number_of_buses = 1;
+        else if (Number_of_travellers >= 20 && Number_of_travellers < 40)
+            Number_of_buses = 2;
+        else
+            Number_of_buses = 3;
     }
 
-
-    Matrix add(Matrix &m) {
-        Matrix result(rows, cols);
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                result.data[i][j] = data[i][j] + m.data[i][j];
-            }
-        }
-        return result;
-    }
-
-    
-    Matrix multiply(Matrix &m) {
-        Matrix result(rows, m.cols);
-
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < m.cols; j++) {
-                result.data[i][j] = 0;
-                for (int k = 0; k < cols; k++) {
-                    result.data[i][j] += data[i][k] * m.data[k][j];
-                }
-            }
-        }
-        return result;
-    }
-
-   
-    void display() {
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                cout << data[i][j] << " ";
-            }
-            cout << endl;
-        }
+  
+    void ShowPlan() {
+        cout << "\nPlan Code: " << PlanCode << endl;
+        cout << "Place: " << Place << endl;
+        cout << "Number of Travellers: " << Number_of_travellers << endl;
+        cout << "Number of Buses: " << Number_of_buses << endl;
     }
 };
 int main() {
-    Matrix A(2, 2);
-    Matrix B(2, 2);
-
-    A.setElement(0, 0, 1);
-    A.setElement(0, 1, 2);
-    A.setElement(1, 0, 3);
-    A.setElement(1, 1, 4);
-
-    B.setElement(0, 0, 5);
-    B.setElement(0, 1, 6);
-    B.setElement(1, 0, 7);
-    B.setElement(1, 1, 8);
-
-    Matrix C = A.add(B);
-    Matrix D = A.multiply(B);
-
-    cout << "Addition:\n";
-    C.display();
-
-    cout << "Multiplication:\n";
-    D.display();
-
-
+    TravelPlan T;
+    T.NewPlan();
+    T.ShowPlan();
+    return 0;
 }
-
