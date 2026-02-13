@@ -1,56 +1,48 @@
 #include<iostream>
-#include<string.h>
 using namespace std;
-class TaxDeductibles;
-class Employee{
+class Vector{
+    private:
+    double x;
+    double y;
+
     public:
-    int eid;
-    string eName;
-    double annualSalary;
-
-    friend void Tax(Employee, TaxDeductibles);
-
-};
-class TaxDeductibles{
-    public:
-    int eid;
-    double insurancePremium;
-    double homeLoanInterest;
-
-
-    friend void Tax(Employee, TaxDeductibles);
-};
-void Tax(Employee e1, TaxDeductibles t1){
-    double deduction;
-    double annualTax;
-
-    if(e1.eid!= t1.eid){
-        cout<<"Sorry! Unable to compute tax as the eid dont match"<<endl;
+    void setData(){
+        cout<<"Enter x and y coordinate: ";
+        cin>>x>>y;
+        cout<<endl;
     }
-    else{
-        if(t1.insurancePremium>50000){
-            t1.insurancePremium = 50000;
+    Vector operator* (double t){
+        Vector temp;
+        temp.x = x*t;
+        temp.y = y*t;
+        return temp;
+    }
+    Vector operator + (Vector V){
+        Vector temp;
+        temp.x = x + V.x;
+        temp.y = y + V.y;
+        return temp;
+    }
+
+    void display(){
+        if(y>=0){
+            cout<<x<<" i  + "<<y<<" j"<<endl;
         }
-        deduction =  t1.insurancePremium + t1.homeLoanInterest;
-        cout<<"Your total deduction= "<<t1.insurancePremium<<" + "<<t1.homeLoanInterest<<" = "<<deduction<<endl;
-        
+        else{
+            cout<<x<<" i  - "<<y<<" j"<<endl;
+        }
+    }   
 
-        annualTax = 0.1* (e1.annualSalary - deduction);
-        cout<<"Your Annual Tax = 10% of ("<<e1.annualSalary <<" - "<<deduction<<") = "<<annualTax<<endl;
-    }
-
-    }
-
+};
 int main(){
-    Employee e1;
-    cout<<"Enter employee details: "<<endl;
-    cin>>e1.eid>>e1.eName>>e1.annualSalary;
+    Vector P, V, D;
+    double t;
+    P.setData();
+    V.setData();
+    cout<<"Enter time: ";
+    cin>>t;
 
-    TaxDeductibles t1;
-    cout<<"Enter Tax Deductibles: "<<endl;
-    cin>>t1.eid>>t1.insurancePremium>>t1.homeLoanInterest;
-
-    Tax(e1,t1);
-
-
+    D = P+(V*t);
+    cout<<"Final position of boat: "<<endl;
+    D.display();  
 }
