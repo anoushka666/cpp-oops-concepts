@@ -1,54 +1,87 @@
-/*private = Student ID, study hours, + operator to add, - operator to deduct,
- student 1 = +10, student 2 = -5, friend func to compare and access*/
-
 #include<iostream>
+#include<string>
 using namespace std;
-class Student{
-    private:
-    int ID;
-    int hours;
+class Account{            //base class
+    protected:   //private but accessible to child class
+    int account_num;
+    string holder_name;
+    double balance;
+    
 
     public:
-    //initialize the values
-    Student(int a, int b): ID(a), hours(b){}
-
-    Student operator+ (int time){
-        return Student(ID, hours+time);
+    //initialize details
+    Account(int a, string b, double c):account_num(a), holder_name(b), balance(c){}
+    void deposit(double amount){
+        balance = balance + amount;
+        cout<<"New balance: "<<balance<<endl;
+    }
+    void withdraw(double amount){
+        if (amount>balance){
+            cout<<"Insufficient funds"<<endl;
+        }
+        else {
+            balance = balance - amount;
+            cout<<"New balance: "<<balance<<endl;
+        }
+    }
+    void display() const{
+        cout<<"Accout number: "<<account_num<<endl;
+        cout<<"Holder name: "<<holder_name<<endl;
+        cout<<"Balance: "<<balance<<endl;
 
     }
-    Student operator- (int time){
-        return Student(ID, hours-time);
-
-    }
-    friend void compare(const Student &s1, const Student &s2);
-
-    void display(){
-        cout<<"Student ID: "<<ID<<endl<<"Student hours: "<<hours<<endl;
-    }
-
 };
- 
-void compare(const Student &s1, const Student &s2){
-    cout<<"Study hours of student "<<s1.ID<<" = "<<s1.hours<<endl;
-    cout<<"Study hours of student "<<s2.ID<<" = "<<s2.hours<<endl;
 
-    if (s1.hours==s2.hours){
-        cout<<"Both students have same study time";
+class SavingsAccount : public Account{
+    private:
+    double interest_rate;
+
+    public:
+    SavingsAccount(int a, string b, double c, double d):Account(a,b,c), interest_rate(d){};
+    void apply_interest(){
+        double interest = balance * (interest_rate/100);
+        balance = balance + interest;
+        cout<<"New balance: "<<balance<<endl;
     }
-    else if (s1.hours>s2.hours){
-        cout<<"Student 1 has more study hours";
+    void display() const{
+        cout<<"Interest rate: "<<interest_rate<<"%"<<endl;
     }
-    else{
-        cout<<"Student 2 has more study hours";
+};
+
+class CurrentAccount : public Account{
+    private:
+    double overdraft_limit;
+
+    public:
+    CurrentAccount(int a, string b, double c, double d): Account(a,b,c), overdraft_limit(d){};
+    void withdraw(double amount){
+        if (amount > balance + overdraft_limit){
+            cout<<"Withdrawal exceeds limit"<<endl;
+        }
+        else{
+            balance = balance - amount;
+            cout<<"New balance: "<<balance<<endl;
+        }
     }
-}
+    void display() const{
+        cout<<"Overdraft limit: "<<overdraft_limit<<endl;
+
+    }
+};
 int main(){
-    Student s1(101, 100);
-    Student s2(102, 55);
-    Student s3 = s1+10;
-    Student s4 = s2-5;
+    SavingsAccount s1(1001, "anoushka", 5000, 5);
+    s1.Account::display();
+    s1.display();
+    
+    s1.withdraw(20000);
+    s1.apply_interest();
 
-    s3.display();
-    s4.display();
-    compare(s1,s2);
+    cout<<endl;
+
+    CurrentAccount c1(2001, "aana", 10000, 2000);
+    c1.Account::display();
+    c1.display();
+
+    c1.withdraw(2000);
+    return 0;
 }
