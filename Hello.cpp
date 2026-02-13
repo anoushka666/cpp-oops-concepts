@@ -1,48 +1,42 @@
 #include<iostream>
 using namespace std;
-class Vector{
+class Product{
     private:
-    double x;
-    double y;
+    double costPrice;
+    double markedPrice;
+    double discount;
+    double sellingPrice;
+    static int count;
 
     public:
-    void setData(){
-        cout<<"Enter x and y coordinate: ";
-        cin>>x>>y;
-        cout<<endl;
+    Product(){
+        cout<<"Enter product details: "<<endl;
+        cin>>costPrice>>markedPrice>>discount;
+        sellingPrice = markedPrice * (1-discount/100);
+    
+    if (sellingPrice> costPrice){
+        count++;
+        cout<<"Selling price: "<<sellingPrice<<endl;
     }
-    Vector operator* (double t){
-        Vector temp;
-        temp.x = x*t;
-        temp.y = y*t;
-        return temp;
+}
+    
+    static int getcount(){
+        return count;
     }
-    Vector operator + (Vector V){
-        Vector temp;
-        temp.x = x + V.x;
-        temp.y = y + V.y;
-        return temp;
+    bool isfeasible(){
+        return sellingPrice > costPrice;
     }
-
-    void display(){
-        if(y>=0){
-            cout<<x<<" i  + "<<y<<" j"<<endl;
-        }
-        else{
-            cout<<x<<" i  - "<<y<<" j"<<endl;
-        }
-    }   
-
 };
-int main(){
-    Vector P, V, D;
-    double t;
-    P.setData();
-    V.setData();
-    cout<<"Enter time: ";
-    cin>>t;
+int Product::count = 0;
 
-    D = P+(V*t);
-    cout<<"Final position of boat: "<<endl;
-    D.display();  
+int main(){
+    Product *product = new Product[3];
+    int count = 0;
+    for (int i=0; i<3; i++){
+        if(product[i].isfeasible()){
+            count++;
+        }
+
+    }
+    cout<<"Number of feasible products= "<<count;
 }
