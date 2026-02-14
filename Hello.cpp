@@ -1,77 +1,77 @@
 #include<iostream>
 #include<string>
 using namespace std;
-class Student{
+class Ship{
     protected:
-    int roll;
     string name;
+    int fuel_capacity;
+    double valuation;
+    string owning_company;
+    double insurance_premium;
 
     public:
-    void setStudent(){
-        cout<<"Enter roll and name: ";
-        cin>>roll>>name;
+
+    virtual void computeInsurance() = 0; //pure virtual function
+    void getDataShip(){
+        cout<<"Enter details of ship: ";
+        cin>>name>>fuel_capacity>>valuation>>owning_company>>insurance_premium;
     }
-    void displayStudent(){
-        cout<<"Name: "<<name<<endl;
-        cout<<"Roll: "<<roll<<endl;
+
+    void display(){
+        cout<<"\nShip Name: "<<name<<endl;
+        cout<<"Fuel Capacity: "<<fuel_capacity<<endl;
+        cout<<"Valuation: "<<valuation<<endl;
+        cout<<"Owning Company: "<<owning_company<<endl;
+        cout<<"Insurance Premium: "<<insurance_premium<<endl;
+    
+    }
+
+
+};
+class CruiseShip: public Ship{
+    protected: 
+    int passengers;
+    int pools;
+    double food_storage;
+
+    public:
+    void computeInsurance(){
+        insurance_premium = (valuation + fuel_capacity + food_storage)/ (passengers*pools);
+        cout<<"Insurance premium: "<<insurance_premium;
+    }
+
+    void getData(){
+        getDataShip();
+        cout<<"Enter additional details of cruise ship: ";
+        cin>>passengers>>pools>>food_storage;
+    }
+    
+
+};
+
+class CargoShip: public Ship{
+    protected: 
+    int crew;
+    int zones;
+    double inflammable;
+
+    public:
+    void computeInsurance(){
+        insurance_premium = ((valuation+ fuel_capacity)*zones+inflammable)/(crew*1000);
+        cout<<"Insurance premium: "<<insurance_premium;
+    }
+
+    void getData(){
+        void getDataShip();
+        cout<<"Enter additional details of cargo ship: ";
+        cin>>crew>>zones>>inflammable;
     }
 };
 
-class Cricketer: virtual public Student{
-    protected:
-    int runs;
-    int wickets;
-    public:
-    void setCricketer(){
-        cout<<"Enter runs and wickets: ";
-        cin>>runs>>wickets;
-    }
-    void displayCricketer(){
-        cout<<"Runs: "<<runs<<endl;
-        cout<<"Wickets: "<<wickets<<endl;
-    }
-
-};
-class Footballer: virtual public Student{
-    protected:
-    int goals;
-    int assists;
-    public:
-    void setFootballer(){
-        cout<<"Enter goals and assists: ";
-        cin>>goals>>assists;
-    }
-    void displayFootballer(){
-        cout<<"Goals: "<<goals<<endl;
-        cout<<"Assists: "<<assists<<endl;
-    }
-};
-class Star: public Cricketer, public Footballer{
-    public:
-    float index;
-    void calculateIndex(){
-        index = (float)(runs-1000)/runs + (goals-10)/goals;
-    }
-    void displayStar(){
-        if(index>0){
-            cout<<"Star performer details: "<<endl;
-            displayStudent();
-            displayCricketer();
-            displayFootballer();
-        }
-        else{
-            cout<<"Student is not star performer"<<endl;
-        }
-    }
-    void setAll(){
-        setStudent();
-        setFootballer();
-        setCricketer();   
-    }
-};
 int main(){
-    Star s1;
-    s1.setAll();
-    s1.calculateIndex();
-    s1.displayStar();
+    CruiseShip s1;
+    s1.getData();
+    s1.computeInsurance();
+    s1.display();
+
 }
