@@ -1,38 +1,26 @@
 #include<iostream>
+#include<cstdlib>  //for rand()
+#include<ctime>    //for srand()
 using namespace std;
-class Time{
-    private:
-    int hours;
-    int mins;
 
-    public:
-    void getTime(){
-        cout<<"Enter time in hours: ";
-        cin>>hours;
-        cout<<"Enter time in mins: ";
-        cin>>mins; 
-    }
-
-    Time operator + (Time t){
-        Time temp;
-        temp.hours = hours + t.hours;
-        temp.mins = mins + t.mins;
-        
-        temp.hours = temp.hours + temp.mins/60;
-        temp.mins = temp.mins % 60;
-        return temp;
-    }
-
-    void display(){
-        cout<<"Total time: "<<hours<<" hours and "<<mins<<" mins"<<endl;
-    }
-};
+int flip(){
+    return rand()%2;  //returns 0 or 1
+}
 int main(){
-    Time t1;
-    t1.getTime();
-    Time t2;
-    t2.getTime();
-    Time t3 = t1+t2;
-    t3.display();
-
+    int heads = 0;
+    int tails = 0;
+    srand(time(0));
+    for (int i=0; i<10 ; i++){
+        int result = flip();
+        if(result==1){
+            cout<<"Heads"<<endl;
+            heads++;
+        }
+        else{
+            cout<<"Tails"<<endl;
+            tails++;
+        }
+    }
+    cout<<"Total heads = "<<heads<<endl;
+    cout<<"Total tails = "<<tails<<endl;
 }
