@@ -1,42 +1,77 @@
 #include<iostream>
+#include<string>
 using namespace std;
-class Product{
-    private:
-    double costPrice;
-    double markedPrice;
-    double discount;
-    double sellingPrice;
-    static int count;
+class Student{
+    protected:
+    int roll;
+    string name;
 
     public:
-    Product(){
-        cout<<"Enter product details: "<<endl;
-        cin>>costPrice>>markedPrice>>discount;
-        sellingPrice = markedPrice * (1-discount/100);
-    
-    if (sellingPrice> costPrice){
-        count++;
-        cout<<"Selling price: "<<sellingPrice<<endl;
+    void setStudent(){
+        cout<<"Enter roll and name: ";
+        cin>>roll>>name;
     }
-}
-    
-    static int getcount(){
-        return count;
-    }
-    bool isfeasible(){
-        return sellingPrice > costPrice;
+    void displayStudent(){
+        cout<<"Name: "<<name<<endl;
+        cout<<"Roll: "<<roll<<endl;
     }
 };
-int Product::count = 0;
 
-int main(){
-    Product *product = new Product[3];
-    int count = 0;
-    for (int i=0; i<3; i++){
-        if(product[i].isfeasible()){
-            count++;
-        }
-
+class Cricketer: virtual public Student{
+    protected:
+    int runs;
+    int wickets;
+    public:
+    void setCricketer(){
+        cout<<"Enter runs and wickets: ";
+        cin>>runs>>wickets;
     }
-    cout<<"Number of feasible products= "<<count;
+    void displayCricketer(){
+        cout<<"Runs: "<<runs<<endl;
+        cout<<"Wickets: "<<wickets<<endl;
+    }
+
+};
+class Footballer: virtual public Student{
+    protected:
+    int goals;
+    int assists;
+    public:
+    void setFootballer(){
+        cout<<"Enter goals and assists: ";
+        cin>>goals>>assists;
+    }
+    void displayFootballer(){
+        cout<<"Goals: "<<goals<<endl;
+        cout<<"Assists: "<<assists<<endl;
+    }
+};
+class Star: public Cricketer, public Footballer{
+    public:
+    float index;
+    void calculateIndex(){
+        index = (float)(runs-1000)/runs + (goals-10)/goals;
+    }
+    void displayStar(){
+        if(index>0){
+            cout<<"Star performer details: "<<endl;
+            displayStudent();
+            displayCricketer();
+            displayFootballer();
+        }
+        else{
+            cout<<"Student is not star performer"<<endl;
+        }
+    }
+    void setAll(){
+        setStudent();
+        setFootballer();
+        setCricketer();   
+    }
+};
+int main(){
+    Star s1;
+    s1.setAll();
+    s1.calculateIndex();
+    s1.displayStar();
 }
