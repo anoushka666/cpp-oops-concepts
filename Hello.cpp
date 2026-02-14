@@ -1,77 +1,62 @@
 #include<iostream>
-#include<string>
 using namespace std;
-class Ship{
+class Forex;
+class Equity{
     protected:
-    string name;
-    int fuel_capacity;
-    double valuation;
-    string owning_company;
-    double insurance_premium;
+    int buyPrice;
+    int CMP;
+    int quantity;
 
     public:
-
-    virtual void computeInsurance() = 0; //pure virtual function
-    void getDataShip(){
-        cout<<"Enter details of ship: ";
-        cin>>name>>fuel_capacity>>valuation>>owning_company>>insurance_premium;
+    Equity(){
+        cout<<"Enter details: ";
+        cin>>buyPrice>>CMP>>quantity;
     }
-
-    void display(){
-        cout<<"\nShip Name: "<<name<<endl;
-        cout<<"Fuel Capacity: "<<fuel_capacity<<endl;
-        cout<<"Valuation: "<<valuation<<endl;
-        cout<<"Owning Company: "<<owning_company<<endl;
-        cout<<"Insurance Premium: "<<insurance_premium<<endl;
-    
+    void displayE(){
+        cout<<"Equity: "<<endl;
+        cout<<"Buying price: "<<buyPrice<<endl;
+        cout<<"CMP: "<<CMP<<endl;
+        cout<<"Quantity: "<<quantity<<endl;
     }
-
-
+    friend void Compare(Equity, Forex);
 };
-class CruiseShip: public Ship{
-    protected: 
-    int passengers;
-    int pools;
-    double food_storage;
+class Forex{
+    protected:
+    int quotePrice;
+    int basePrice;
+    int lotSize;
+    int noofLots;
 
     public:
-    void computeInsurance(){
-        insurance_premium = (valuation + fuel_capacity + food_storage)/ (passengers*pools);
-        cout<<"Insurance premium: "<<insurance_premium;
+    Forex(){
+        cout<<"Enter details: ";
+        cin>>quotePrice>>basePrice>>lotSize>>noofLots;
+    }
+    void displayF(){
+        cout<<"Forex: "<<endl;
+        cout<<"Quote Price: "<<quotePrice<<endl;
+        cout<<"Base Price: "<<basePrice<<endl;
+        cout<<"Lot Size: "<<lotSize<<endl;
+        cout<<"Noof Lots: "<<noofLots<<endl;
     }
 
-    void getData(){
-        getDataShip();
-        cout<<"Enter additional details of cruise ship: ";
-        cin>>passengers>>pools>>food_storage;
-    }
-    
-
+    friend void Compare(Equity, Forex);
 };
-
-class CargoShip: public Ship{
-    protected: 
-    int crew;
-    int zones;
-    double inflammable;
-
-    public:
-    void computeInsurance(){
-        insurance_premium = ((valuation+ fuel_capacity)*zones+inflammable)/(crew*1000);
-        cout<<"Insurance premium: "<<insurance_premium;
+void Compare(Equity e1, Forex f1){
+    int yieldEquity = ((e1.buyPrice- e1.CMP)*e1.quantity)/e1.buyPrice;
+    int yieldForex = ((f1.quotePrice - f1.basePrice)*f1.lotSize*f1.noofLots)/(f1.quotePrice+ f1.basePrice);
+    if(yieldEquity> yieldForex){
+        cout<<"Equity is the better financial instrument"<<endl;
+        e1.displayE();
     }
-
-    void getData(){
-        void getDataShip();
-        cout<<"Enter additional details of cargo ship: ";
-        cin>>crew>>zones>>inflammable;
+    else{
+        cout<<"Forex is the better financial instrument"<<endl;
+        f1.displayF();
     }
-};
-
+     
+}
 int main(){
-    CruiseShip s1;
-    s1.getData();
-    s1.computeInsurance();
-    s1.display();
-
+    Equity e1;
+    Forex f1;
+    Compare(e1,f1);
 }
