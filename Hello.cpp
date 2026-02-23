@@ -1,74 +1,89 @@
 #include<iostream>
 #include<string>
+#include<string.h>
 using namespace std;
-class EWallet{
+class Book{
     private:
-    int userId;
-    string userName;
-    double currentBalance;
+    int bookID;
+    char *author;
+    char *title;
+    double price;
+    static int count;
 
     public:
-    EWallet(){
-        cout<<"Enter user ID: ";
-        cin>>userId;
-        cout<<"Enter user name: ";
-        cin>>userName;
-        cout<<"Enter current balance: ";
-        cin>>currentBalance;
-        if(currentBalance<0){
-            currentBalance = 0;
-        }
-    }
-
-    void addMoney(double amount){
-        currentBalance = currentBalance + amount;
-        if(currentBalance<0){
-            currentBalance = 0;
-        }
-    }
-
-    void display(){
-        cout<<"User ID: "<<userId<<endl;
-        cout<<"User name: "<<userName<<endl;
-        cout<<"Balance: "<<currentBalance<<endl;
-    }
-
-    void transfer(EWallet e1, double amount){
-        currentBalance = currentBalance - amount;
-        e1.currentBalance = e1.currentBalance + amount;
-        if(currentBalance<0){
-            currentBalance = 0;
-        }
-    }
-    void operator-(double amount) {
-        if (amount <= currentBalance) {
-            currentBalance -= amount;
-        } else {
-            cout << "Insufficient balance!\n";
-        }
-    }
-
-
-    friend ostream& operator <<(ostream& out, const EWallet& e1);
-};
-
-    ostream& operator <<(ostream& out, const EWallet& e1){
-        out<<"User name: "<<e1.userName<<endl;
-        out<<"User ID: "<<e1.userId<<endl;
-        out<<"Balance: "<<e1.currentBalance<<endl;
-        return out;
-
-
-    }
-int main(){
-    EWallet e1;
-    EWallet e2;
-
-    e1.addMoney(4000);
-    e1 - 1000;
-    cout<<e1;
+    int size;
+    Book(int a, const char *b, const char *c, double d){
+        bookID = a;
     
-    e1.transfer(e2, 300);
-    cout<<e2;
-    cout<<e1;
+        author = new char [strlen(b)+1];
+        strcpy(author, b);
+
+     
+        title = new char[strlen(c)+1];
+        strcpy(title, c);
+
+        price = d;
+        count++;
+
+    }
+
+     void display() {
+        cout << "\nBook ID: " << bookID;
+        cout << "\nTitle: " << title;
+        cout << "\nAuthor: " << author;
+        cout << "\nPrice: " << price << endl;
+    }   
+
+    static void getCount(){
+        cout<<"There are "<<count<<" books in the library!"<<endl;
+    }
+
+    friend void calculateDiscount(Book &b);
+
+    friend class LibraryAudit;
+
+    ~Book(){
+        delete[] author;
+        delete[] title;
+        count--;
+    }
+};
+int Book:: count =0;
+
+void calculateDiscount(Book &b){
+        b.price = b.price - (0.1*b.price);
+        cout<<"After discount, price: "<<b.price<<endl;
+    }
+
+class LibraryAudit{
+public:
+void audit(Book &b){
+        cout << "\n--- Audit Details ---";
+        cout << "\nBook ID: " << b.bookID;
+        cout << "\nTitle: " << b.title;
+        cout << "\nAuthor: " << b.author;
+        cout << "\nPrice: " << b.price << endl;
 }
+    };
+    int main() {
+
+
+    Book b1(101, "C++ Programming", "Bjarne Stroustrup", 500);
+    Book b2(102, "Data Structures", "Mark Allen Weiss", 600);
+
+ 
+    b1.display();
+    b2.display();
+
+  
+    Book::getCount();
+
+   
+    calculateDiscount(b1);
+
+    LibraryAudit auditor;
+    auditor.audit(b1);
+
+    return 0;
+}
+
