@@ -1,53 +1,69 @@
+
 #include<iostream>
 using namespace std;
 
-class Shape {
+class Person{
 public:
-    virtual float area() = 0;
-    virtual float perimeter() = 0;
+    string name;
+    int age;
+    virtual void getdata()=0;
+    virtual void putdata()=0;
 };
 
-class Rectangle : public Shape {
-    float l, b;
+class Professor: public Person{
+    int publications;
+    int cur_id;
+    static int id;
 public:
-    Rectangle(float l, float b) { this->l=l; this->b=b; }
-    float area() { return l*b; }
-    float perimeter() { return 2*(l+b); }
+    Professor(){ cur_id=++id; }
+
+    void getdata(){
+        cin>>name>>age>>publications;
+    }
+
+    void putdata(){
+        cout<<name<<" "<<age<<" "<<publications<<" "<<cur_id<<endl;
+    }
 };
 
-class Square : public Shape {
-    float s;
+int Professor::id=0;
+
+class Student: public Person{
+    int marks[6];
+    int cur_id;
+    static int id;
 public:
-    Square(float s){ this->s=s; }
-    float area(){ return s*s; }
-    float perimeter(){ return 4*s; }
+    Student(){ cur_id=++id; }
+
+    void getdata(){
+        cin>>name>>age;
+        for(int i=0;i<6;i++) cin>>marks[i];
+    }
+
+    void putdata(){
+        int sum=0;
+        for(int i=0;i<6;i++) sum+=marks[i];
+        cout<<name<<" "<<age<<" "<<sum<<" "<<cur_id<<endl;
+    }
 };
 
-class Circle : public Shape {
-    float r;
-public:
-    Circle(float r){ this->r=r; }
-    float area(){ return 3.14*r*r; }
-    float perimeter(){ return 2*3.14*r; }
-};
+int Student::id=0;
 
 int main(){
-    Shape *s;
+    Person *per[2];
 
-    Rectangle r(4,5);
-    s=&r;
-    cout<<"Rectangle Area: "<<s->area()<<endl;
-    cout<<"Rectangle Perimeter: "<<s->perimeter()<<endl;
+    Professor p;
+    Student s;
 
-    Square sq(4);
-    s=&sq;
-    cout<<"Square Area: "<<s->area()<<endl;
-    cout<<"Square Perimeter: "<<s->perimeter()<<endl;
+    per[0]=&p;
+    per[1]=&s;
 
-    Circle c(3);
-    s=&c;
-    cout<<"Circle Area: "<<s->area()<<endl;
-    cout<<"Circle Perimeter: "<<s->perimeter()<<endl;
+    per[0]->getdata();
+    per[1]->getdata();
+
+    per[0]->putdata();
+    per[1]->putdata();
 
     return 0;
 }
+
