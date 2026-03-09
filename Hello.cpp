@@ -1,89 +1,53 @@
 #include<iostream>
-#include<string>
-#include<string.h>
 using namespace std;
-class Book{
-    private:
-    int bookID;
-    char *author;
-    char *title;
-    double price;
-    static int count;
 
-    public:
-    int size;
-    Book(int a, const char *b, const char *c, double d){
-        bookID = a;
-    
-        author = new char [strlen(b)+1];
-        strcpy(author, b);
-
-     
-        title = new char[strlen(c)+1];
-        strcpy(title, c);
-
-        price = d;
-        count++;
-
-    }
-
-     void display() {
-        cout << "\nBook ID: " << bookID;
-        cout << "\nTitle: " << title;
-        cout << "\nAuthor: " << author;
-        cout << "\nPrice: " << price << endl;
-    }   
-
-    static void getCount(){
-        cout<<"There are "<<count<<" books in the library!"<<endl;
-    }
-
-    friend void calculateDiscount(Book &b);
-
-    friend class LibraryAudit;
-
-    ~Book(){
-        delete[] author;
-        delete[] title;
-        count--;
-    }
-};
-int Book:: count =0;
-
-void calculateDiscount(Book &b){
-        b.price = b.price - (0.1*b.price);
-        cout<<"After discount, price: "<<b.price<<endl;
-    }
-
-class LibraryAudit{
+class Shape {
 public:
-void audit(Book &b){
-        cout << "\n--- Audit Details ---";
-        cout << "\nBook ID: " << b.bookID;
-        cout << "\nTitle: " << b.title;
-        cout << "\nAuthor: " << b.author;
-        cout << "\nPrice: " << b.price << endl;
-}
-    };
-    int main() {
+    virtual float area() = 0;
+    virtual float perimeter() = 0;
+};
 
+class Rectangle : public Shape {
+    float l, b;
+public:
+    Rectangle(float l, float b) { this->l=l; this->b=b; }
+    float area() { return l*b; }
+    float perimeter() { return 2*(l+b); }
+};
 
-    Book b1(101, "C++ Programming", "Bjarne Stroustrup", 500);
-    Book b2(102, "Data Structures", "Mark Allen Weiss", 600);
+class Square : public Shape {
+    float s;
+public:
+    Square(float s){ this->s=s; }
+    float area(){ return s*s; }
+    float perimeter(){ return 4*s; }
+};
 
- 
-    b1.display();
-    b2.display();
+class Circle : public Shape {
+    float r;
+public:
+    Circle(float r){ this->r=r; }
+    float area(){ return 3.14*r*r; }
+    float perimeter(){ return 2*3.14*r; }
+};
 
-  
-    Book::getCount();
+int main(){
+    Shape *s;
 
-   
-    calculateDiscount(b1);
+    Rectangle r(4,5);
+    s=&r;
+    cout<<"Rectangle Area: "<<s->area()<<endl;
+    cout<<"Rectangle Perimeter: "<<s->perimeter()<<endl;
 
-    LibraryAudit auditor;
-    auditor.audit(b1);
+    Square sq(4);
+    s=&sq;
+    cout<<"Square Area: "<<s->area()<<endl;
+    cout<<"Square Perimeter: "<<s->perimeter()<<endl;
+
+    Circle c(3);
+    s=&c;
+    cout<<"Circle Area: "<<s->area()<<endl;
+    cout<<"Circle Perimeter: "<<s->perimeter()<<endl;
 
     return 0;
 }
-
