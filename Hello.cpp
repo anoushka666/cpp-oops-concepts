@@ -1,69 +1,42 @@
-
 #include<iostream>
 using namespace std;
+class Rectangle{
+    private:
+    float length;
+    float breadth;
 
-class Person{
-public:
-    string name;
-    int age;
-    virtual void getdata()=0;
-    virtual void putdata()=0;
-};
-
-class Professor: public Person{
-    int publications;
-    int cur_id;
-    static int id;
-public:
-    Professor(){ cur_id=++id; }
-
-    void getdata(){
-        cin>>name>>age>>publications;
+    public:
+    Rectangle(){
+        length = 0;
+        breadth = 0;
     }
-
-    void putdata(){
-        cout<<name<<" "<<age<<" "<<publications<<" "<<cur_id<<endl;
+    Rectangle(float l, float b){
+        length = l;
+        breadth = b;
     }
-};
-
-int Professor::id=0;
-
-class Student: public Person{
-    int marks[6];
-    int cur_id;
-    static int id;
-public:
-    Student(){ cur_id=++id; }
-
-    void getdata(){
-        cin>>name>>age;
-        for(int i=0;i<6;i++) cin>>marks[i];
+    
+    void setter(){
+        cout<<"Enter values: ";
+        cin>>length>>breadth;
     }
-
-    void putdata(){
-        int sum=0;
-        for(int i=0;i<6;i++) sum+=marks[i];
-        cout<<name<<" "<<age<<" "<<sum<<" "<<cur_id<<endl;
+    void getter(){
+        cout<<"Length: "<<length<<endl;
+        cout<<"Breadth: "<<breadth<<endl;
+    }
+    void calculateArea(){
+        cout<<"Area of rectangle: "<<length*breadth<<endl;
+    }
+    ~Rectangle(){
+        cout<<"Object destroyed!"<<endl;
     }
 };
-
-int Student::id=0;
-
 int main(){
-    Person *per[2];
+    Rectangle r1(10,5);
+    r1.getter();
+    r1.calculateArea();
 
-    Professor p;
-    Student s;
-
-    per[0]=&p;
-    per[1]=&s;
-
-    per[0]->getdata();
-    per[1]->getdata();
-
-    per[0]->putdata();
-    per[1]->putdata();
-
-    return 0;
+    Rectangle r2;
+    r2.setter();
+    r2.getter();
+    r2.calculateArea();
 }
-
