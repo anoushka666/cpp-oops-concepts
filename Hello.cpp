@@ -1,42 +1,33 @@
 #include<iostream>
 using namespace std;
-class Rectangle{
+class Box{
     private:
-    float length;
-    float breadth;
+    int length;
+    int breadth;
+    int height;
 
     public:
-    Rectangle(){
-        length = 0;
-        breadth = 0;
-    }
-    Rectangle(float l, float b){
+    Box(int l, int b, int h){
         length = l;
         breadth = b;
+        height = h;
     }
-    
-    void setter(){
-        cout<<"Enter values: ";
-        cin>>length>>breadth;
-    }
-    void getter(){
+    void display(){
         cout<<"Length: "<<length<<endl;
         cout<<"Breadth: "<<breadth<<endl;
+        cout<<"Height: "<<height<<endl;
     }
-    void calculateArea(){
-        cout<<"Area of rectangle: "<<length*breadth<<endl;
-    }
-    ~Rectangle(){
-        cout<<"Object destroyed!"<<endl;
-    }
-};
-int main(){
-    Rectangle r1(10,5);
-    r1.getter();
-    r1.calculateArea();
 
-    Rectangle r2;
-    r2.setter();
-    r2.getter();
-    r2.calculateArea();
+    friend void calculateVol(Box b);
+
+};
+void calculateVol(Box b){
+    cout<<"Volume: "<<b.breadth*b.height*b.length<<endl;
+
+}
+int main(){
+    Box b1(10,5,10);
+    b1.display();
+    calculateVol(b1);
+
 }
