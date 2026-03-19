@@ -30,5 +30,6 @@ int main(){
     Box b1(10,5,10);
     b1.display();
     calculateVol(b1);
-
+return 0;
+    //this is a weak assigner's question
 }
