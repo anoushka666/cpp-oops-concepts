@@ -1,38 +1,45 @@
 #include <iostream>
-#include <cstring>
 using namespace std;
 
-class MyString {
-    char str[100];
-
-public:
-    MyString() {
-        strcpy(str, "");
-    }
-
-    MyString(const char s[]) {
-        strcpy(str, s);
-    }
-
-    MyString operator+(MyString s) {
-        MyString temp;
-        strcpy(temp.str, str);
-        strcat(temp.str, s.str);
-        return temp;
-    }
-
-    void display() {
-        cout << str << endl;
-    }
-};
-
 int main() {
-    MyString s1("Hello ");
-    MyString s2("World");
-    MyString s3;
+    int d, r, c;
+    cin >> d >> r >> c;
 
-    s3 = s1 + s2;   // operator overloading
-    s3.display();
+    // Step 1: allocate depth
+    int ***arr = new int**[d];
+
+    // Step 2: allocate rows
+    for (int i = 0; i < d; i++) {
+        arr[i] = new int*[r];
+        for (int j = 0; j < r; j++) {
+            // Step 3: allocate columns
+            arr[i][j] = new int[c];
+        }
+    }
+
+    // Input
+    for (int i = 0; i < d; i++)
+        for (int j = 0; j < r; j++)
+            for (int k = 0; k < c; k++)
+                cin >> arr[i][j][k];
+
+    // Output
+    for (int i = 0; i < d; i++) {
+        cout << "Layer " << i << ":\n";
+        for (int j = 0; j < r; j++) {
+            for (int k = 0; k < c; k++)
+                cout << arr[i][j][k] << " ";
+            cout << endl;
+        }
+    }
+
+    // Free memory
+    for (int i = 0; i < d; i++) {
+        for (int j = 0; j < r; j++)
+            delete[] arr[i][j];
+        delete[] arr[i];
+    }
+    delete[] arr;
 
     return 0;
 }
