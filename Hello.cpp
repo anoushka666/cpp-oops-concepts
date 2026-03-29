@@ -1,68 +1,76 @@
 #include<iostream>
-#include<cstring>
+#include<string>
 using namespace std;
-
-class Passenger{
-    public:
+class Ship{
+    protected:
     string name;
-    int age;
-
-    void input(){
-        cout<<"Enter name: ";
-        cin>>name;
-        cout<<"Enter age: ";
-        cin>>age;
-    }
-};
-
-class RailwayBooking{
-    private:
-    int ticketcount;
-    static int availableSeats;
-    Passenger p[100];
+    int fuelCapacity;
+    double valuation;
+    string owningCompany;
+    double insurancePremium;
 
     public:
-    void bookTickets(){
-        try{
-            cout<<"Enter number of tickets: ";
-            cin>>ticketcount;
-
-            if (ticketcount<=0){
-                cout<<"Invalid ticket count! Try again";
-            }
-            if (ticketcount> availableSeats){
-                cout<<"Ticket count is more than available seats! Try again";
-            }
-            else{
-                for (int i=0; i<ticketcount; i++){
-                    cout<<"Enter details for each passenger: "<<endl;
-                    p[i].input();
-
-                    if (p[i].age <0){
-                        throw "Invalid age!";
-                    }
-                    if (p[i].age<5){
-                        throw "Children below 5 not allowed to travel alone!";
-                    }
-                }
-                availableSeats = availableSeats - ticketcount;
-                cout<<"Tickets booked successfully!"<<endl;
-                for (int i=0; i<ticketcount; i++){
-                    cout<<"Passenger name: "<<p[i].name<<" age: "<<p[i].age<<endl;
-                }
-                cout<<"Remaining seats: "<<availableSeats;
-            }
+    Ship(string n, int f, double v, string o){
+        name = n;
+        fuelCapacity = f;
+        valuation = v;
+        owningCompany = o;
         
-        }
-        catch (const char* msg){
-                cout<<msg<<endl;
-            }
     }
 };
-int RailwayBooking::  availableSeats = 50;
+class CruiseShip: public Ship{
+    public:
+    int pools;
+    int passengers;
+    double foodStorage;
 
-int main(){
-    RailwayBooking b;
-    b.bookTickets();
+    CruiseShip(string n, int f, double v, string o, int c1, int c2, double c3): Ship(n,f,v,o){
+        passengers = c1;
+        pools = c2;
+        foodStorage = c3;
+    }
 
+    void calulcateInsurancePremium(){
+        insurancePremium = (double)(valuation + fuelCapacity + foodStorage)/ (passengers*pools);
+    }
+    void displayDetails(){
+        cout<<"Ship name: "<<name<<endl;
+        cout<<"Ship type: Cruise Ship"<<endl;
+        cout<<"Insurance Premium: "<<insurancePremium<<endl;
+    }
+};
+class CargoCarrier: public Ship{
+    public:
+    int crew;
+    int riskyZones;
+    double inflammables;
+
+    CargoCarrier(string n, int f, double v, string o, int d1, int d2, double d3): Ship(n,f,v,o){
+        crew = d1;
+        riskyZones = d2;
+        inflammables = d3;
+    }
+    void calulcateInsurancePremium(){
+        insurancePremium = (double)((valuation + fuelCapacity)* riskyZones + inflammables)/ (crew*1000);
+    }
+    void displayDetails(){
+        cout<<"Ship name: "<<name<<endl;
+        cout<<"Ship type: Cargo Carrier"<<endl;
+        cout<<"Insurance Premium: "<<insurancePremium<<endl;
+    }
+
+};
+
+int main() {
+    CruiseShip cs("Ocean Star", 5000, 2000000, "BlueWave", 200, 4, 1500.5);
+    cs.calulcateInsurancePremium();
+    cs.displayDetails();
+
+    cout<<endl;
+
+   CargoCarrier cc("Cargo King", 8000, 3000000, "SeaTrans", 50, 3, 2500.75);
+    cc.calulcateInsurancePremium();
+    cc.displayDetails();
+
+    return 0;
 }
