@@ -1,45 +1,55 @@
-#include <iostream>
+#include<iostream>
+#include<cstring>
 using namespace std;
-
-int main() {
-    int d, r, c;
-    cin >> d >> r >> c;
-
-    // Step 1: allocate depth
-    int ***arr = new int**[d];
-
-    // Step 2: allocate rows
-    for (int i = 0; i < d; i++) {
-        arr[i] = new int*[r];
-        for (int j = 0; j < r; j++) {
-            // Step 3: allocate columns
-            arr[i][j] = new int[c];
-        }
+class Student{
+    protected:
+string name;
+int roll;
+    public:
+Student(string n, int r){
+    name = n;
+    roll = r;
+}
+};
+class Researcher: virtual public Student{
+    protected:
+int published;
+int citations;
+    public:
+Researcher(string n, int r, int p, int c): Student (n,r){
+        published = p;
+        citations = c;
     }
-
-    // Input
-    for (int i = 0; i < d; i++)
-        for (int j = 0; j < r; j++)
-            for (int k = 0; k < c; k++)
-                cin >> arr[i][j][k];
-
-    // Output
-    for (int i = 0; i < d; i++) {
-        cout << "Layer " << i << ":\n";
-        for (int j = 0; j < r; j++) {
-            for (int k = 0; k < c; k++)
-                cout << arr[i][j][k] << " ";
-            cout << endl;
-        }
+};
+class Debater: virtual public Student{
+    protected:
+int won;
+int award;
+    public:
+Debater(string n, int r, int w, int a): Student (n,r){
+        won = w;
+        award = a;
     }
+};
+class TopScholar: public Researcher, public Debater{
+public:
+float scholarshipIndex;
+TopScholar(string n, int r, int p,  int c, int w, int a):Student(n,r), Researcher(n, r, p, c), Debater(n, r, w, a){;
 
-    // Free memory
-    for (int i = 0; i < d; i++) {
-        for (int j = 0; j < r; j++)
-            delete[] arr[i][j];
-        delete[] arr[i];
-    }
-    delete[] arr;
+scholarshipIndex = (float)(published-5)/published + (float)(won-3)/won;
+if (scholarshipIndex>0){
+    cout<<"Student is a Top Scholar! "<<endl;
+    cout<<"Student name: "<<name<<endl;
+    cout<<"Student roll number: "<<roll<<endl;
+    
+}
+else{
+    cout<<"Student is not a Top Scholar!"<<endl;
+}
+}
+};
+int main(){
+    TopScholar t1("Anoushka", 239, 10, 200, 5, 3);
+    TopScholar t2("Aana", 232, 4, 150, 2, 5);
 
-    return 0;
 }
