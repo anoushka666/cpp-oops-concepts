@@ -1,55 +1,68 @@
 #include<iostream>
 #include<cstring>
 using namespace std;
-class Student{
-    protected:
-string name;
-int roll;
-    public:
-Student(string n, int r){
-    name = n;
-    roll = r;
-}
-};
-class Researcher: virtual public Student{
-    protected:
-int published;
-int citations;
-    public:
-Researcher(string n, int r, int p, int c): Student (n,r){
-        published = p;
-        citations = c;
-    }
-};
-class Debater: virtual public Student{
-    protected:
-int won;
-int award;
-    public:
-Debater(string n, int r, int w, int a): Student (n,r){
-        won = w;
-        award = a;
-    }
-};
-class TopScholar: public Researcher, public Debater{
-public:
-float scholarshipIndex;
-TopScholar(string n, int r, int p,  int c, int w, int a):Student(n,r), Researcher(n, r, p, c), Debater(n, r, w, a){;
 
-scholarshipIndex = (float)(published-5)/published + (float)(won-3)/won;
-if (scholarshipIndex>0){
-    cout<<"Student is a Top Scholar! "<<endl;
-    cout<<"Student name: "<<name<<endl;
-    cout<<"Student roll number: "<<roll<<endl;
-    
-}
-else{
-    cout<<"Student is not a Top Scholar!"<<endl;
-}
-}
+class Passenger{
+    public:
+    string name;
+    int age;
+
+    void input(){
+        cout<<"Enter name: ";
+        cin>>name;
+        cout<<"Enter age: ";
+        cin>>age;
+    }
 };
+
+class RailwayBooking{
+    private:
+    int ticketcount;
+    static int availableSeats;
+    Passenger p[100];
+
+    public:
+    void bookTickets(){
+        try{
+            cout<<"Enter number of tickets: ";
+            cin>>ticketcount;
+
+            if (ticketcount<=0){
+                cout<<"Invalid ticket count! Try again";
+            }
+            if (ticketcount> availableSeats){
+                cout<<"Ticket count is more than available seats! Try again";
+            }
+            else{
+                for (int i=0; i<ticketcount; i++){
+                    cout<<"Enter details for each passenger: "<<endl;
+                    p[i].input();
+
+                    if (p[i].age <0){
+                        throw "Invalid age!";
+                    }
+                    if (p[i].age<5){
+                        throw "Children below 5 not allowed to travel alone!";
+                    }
+                }
+                availableSeats = availableSeats - ticketcount;
+                cout<<"Tickets booked successfully!"<<endl;
+                for (int i=0; i<ticketcount; i++){
+                    cout<<"Passenger name: "<<p[i].name<<" age: "<<p[i].age<<endl;
+                }
+                cout<<"Remaining seats: "<<availableSeats;
+            }
+        
+        }
+        catch (const char* msg){
+                cout<<msg<<endl;
+            }
+    }
+};
+int RailwayBooking::  availableSeats = 50;
+
 int main(){
-    TopScholar t1("Anoushka", 239, 10, 200, 5, 3);
-    TopScholar t2("Aana", 232, 4, 150, 2, 5);
+    RailwayBooking b;
+    b.bookTickets();
 
 }
