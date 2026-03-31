@@ -1,34 +1,70 @@
 #include<iostream>
 using namespace std;
+class A{
+    public:
+    A(){
+        cout<<"1"<<endl;
+    }
+    A(int x){
+        cout<<"2"<<endl;
+    }
+    virtual void T2(){
+        cout<<" A T2()"<<endl;
+    }
+    ~A(){
+        cout<<"A dead"<<endl;
+    }
+};
+class E{
+    public:
+    E(){
+        cout<<"3"<<endl;
+    }
+    E(int x){
+        cout<<"4"<<endl;
+    }
+};
+class B: virtual public A{
+    public:
+    B(){
+        cout<<"5"<<endl;
+    }
+    B(int x){
+        cout<<"6"<<endl;
+    }
+    void T2(){
+        cout<<"B T2()"<<endl;
+    }
+    ~B(){
+        cout<<"B dead"<<endl;
+    }
+};
+class C:virtual public E{
+    public:
+    C(){
+        cout<<"7"<<endl;
+    }
+    C(int x){
+        cout<<"8"<<endl;
+    }
+};
+class D: public C, public B{
+    public:
+    D(): E(5), B(1){
+        cout<<"9"<<endl;
+    }
+    D(int x): A(3), C(2){
+        cout<<"10"<<endl;
+    }
+    void T2(){
+        cout<<"D T2()"<<endl;   
+    }
+    ~D(){
+        cout<<"D dead"<<endl;
+    }
+};
 int main(){
-    double numerator, denominator, arr[4] = {0.0, 0.0, 0.0, 0.0};
-    int index;
-
-    cout<<"Enter array index: ";
-    cin>>index;
-
-    try{
-        //throw exception if array is out of bounds
-        if (index<0 || index>4){
-            throw "Invalid index! Try again";
-        }
-
-        cout<<"Enter numerator: ";
-        cin>>numerator;
-        cout<<"Enter denominator: ";
-        cin>>denominator;
-
-        //throw exception if denominator is 0 
-        if (denominator==0){
-            throw "Invalid denominator! Try again";
-        }
-        else{
-        arr[index] = numerator/denominator;
-        cout<<arr[index]<<endl;
-        }
-    }
-    
-    catch (const char *msg){
-        cout<<msg<<endl;
-    }
+    B *obj = new D(2);
+    obj->T2();
+    delete obj;
 }
