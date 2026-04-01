@@ -1,70 +1,75 @@
 #include<iostream>
 using namespace std;
-class A{
-    public:
-    A(){
-        cout<<"1"<<endl;
+
+class Person{
+protected:
+    int id;
+    string name;
+
+public:
+    Person(int a, string n){
+        id = a;
+        name = n;
+        cout << "Person constructor!" << endl;
     }
-    A(int x){
-        cout<<"2"<<endl;
-    }
-    virtual void T2(){
-        cout<<" A T2()"<<endl;
-    }
-    ~A(){
-        cout<<"A dead"<<endl;
-    }
-};
-class E{
-    public:
-    E(){
-        cout<<"3"<<endl;
-    }
-    E(int x){
-        cout<<"4"<<endl;
+
+    virtual void displayRole(){
+        cout << "This is a person" << endl;
     }
 };
-class B: virtual public A{
-    public:
-    B(){
-        cout<<"5"<<endl;
+
+class Teacher : virtual public Person{
+protected:
+    string subject;
+
+public:
+    Teacher(int a, string n, string s) : Person(a, n){
+        subject = s;
+        cout << "Teacher constructor!" << endl;
     }
-    B(int x){
-        cout<<"6"<<endl;
-    }
-    void T2(){
-        cout<<"B T2()"<<endl;
-    }
-    ~B(){
-        cout<<"B dead"<<endl;
-    }
-};
-class C:virtual public E{
-    public:
-    C(){
-        cout<<"7"<<endl;
-    }
-    C(int x){
-        cout<<"8"<<endl;
+
+    void displayRole(){
+        cout << "This is a teacher" << endl;
     }
 };
-class D: public C, public B{
-    public:
-    D(): E(5), B(1){
-        cout<<"9"<<endl;
+
+class Researcher : virtual public Person{
+protected:
+    string field;
+
+public:
+    Researcher(int a, string n, string f) : Person(a, n){
+        field = f;
+        cout << "Researcher constructor!" << endl;
     }
-    D(int x): A(3), C(2){
-        cout<<"10"<<endl;
-    }
-    void T2(){
-        cout<<"D T2()"<<endl;   
-    }
-    ~D(){
-        cout<<"D dead"<<endl;
+
+    void displayRole(){
+        cout << "This is a researcher" << endl;
     }
 };
+
+class Professor : public Teacher, public Researcher{
+protected:
+    string publications;
+
+public:
+    Professor(int a, string n, string s, string f, string p)
+        : Person(a, n), Teacher(a, n, s), Researcher(a, n, f){
+        publications = p;
+        cout << "Professor constructor!" << endl;
+    }
+
+    void displayRole(){
+        cout << "This is a professor" << endl;
+        cout << "Name: " << name << endl;
+        cout << "ID: " << id << endl;
+        cout << "Subject: " << subject << endl;
+        cout << "Field: " << field << endl;
+        cout << "Publications: " << publications << endl;
+    }
+};
+
 int main(){
-    B *obj = new D(2);
-    obj->T2();
-    delete obj;
+    Professor p1(239, "Anoushka", "Maths", "Algebra", "JIIT");
+    p1.displayRole();
 }
