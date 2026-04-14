@@ -1,33 +1,35 @@
 #include<iostream>
+#include<new>
 using namespace std;
-int main(){
-    int n;
-    cin>>n;
-    int query;
-    cin>>query;
 
-    
-    int **arr = new int*[n]; //n arrays
-    int *sizes = new int [n];
+class Throw{
+public:
+    Throw(){
+        int n;
+        cin >> n;
 
-    for (int i=0; i<n; i++){
-        cin>>sizes[i];
-        arr[i] = new int[sizes[i]];
+        try{
+            int *arr = new int[n];
 
-        for (int j=0; j<sizes[i]; j++){
-            cin>>arr[i][j];
+            for(int i = 0; i < n; i++){
+                cin >> arr[i];
+
+                if(arr[i] < 0){
+                    throw "Exception: A is negative";
+                }
+            }
+
+            delete[] arr;
+        }
+        catch(bad_alloc&){
+            cout << "Not enough memory" << endl;
+        }
+        catch(const char *msg){
+            cout << msg << endl;
         }
     }
-    
-    for (int i=0; i<query; i++){
-        int x,y;
-        cin>>x>>y;
-        cout<<arr[x][y]<<endl;
-    
-    }
-    for (int i = 0; i < n; i++) {
-        delete[] arr[i];
-    }
-    delete[] arr;
-    delete[] sizes;
+};
+
+int main(){
+    Throw t1;
 }
