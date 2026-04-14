@@ -1,35 +1,51 @@
-#include<iostream>
-#include<new>
+#include <cmath>
+#include <cstdio>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+#include <cassert>
 using namespace std;
+class Student{
+    public:
+    int marks[5];
 
-class Throw{
-public:
-    Throw(){
-        int n;
-        cin >> n;
-
-        try{
-            int *arr = new int[n];
-
-            for(int i = 0; i < n; i++){
-                cin >> arr[i];
-
-                if(arr[i] < 0){
-                    throw "Exception: A is negative";
-                }
-            }
-
-            delete[] arr;
-        }
-        catch(bad_alloc&){
-            cout << "Not enough memory" << endl;
-        }
-        catch(const char *msg){
-            cout << msg << endl;
-        }
+void input(){
+    for (int i=0; i<5; i++){
+        cin>>marks[i];
     }
+}
+int calculateTotalScore(){
+    int score=0;
+    for (int i=0; i<5; i++){
+        score = score + marks[i];
+    }
+    return score;
+}
 };
 
-int main(){
-    Throw t1;
+int main() {
+    int n; // number of students
+    cin >> n;
+    Student *s = new Student[n]; // an array of n students
+    
+    for(int i = 0; i < n; i++){
+        s[i].input();
+    }
+
+    // calculate kristen's score
+    int kristen_score = s[0].calculateTotalScore();
+
+    // determine how many students scored higher than kristen
+    int count = 0; 
+    for(int i = 1; i < n; i++){
+        int total = s[i].calculateTotalScore();
+        if(total > kristen_score){
+            count++;
+        }
+    }
+
+    // print result
+    cout << count;
+    
+    return 0;
 }
