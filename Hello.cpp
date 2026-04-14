@@ -1,20 +1,33 @@
 #include<iostream>
-#include<string>
-#include<cstdlib>
 using namespace std;
-
-int operation(int *a, int *b){
-    int x = *a;
-    int y = *b;
-    *a = x + y;
-    *b = abs(x - y);
-    return *a, *b;
-}
 int main(){
-    int a, b;
-    int *p1 = &a;
-    int *p2 = &b;
-    cin>>a>>b;
-    operation(p1, p2); 
-    cout<<a<<endl<<b;
+    int n;
+    cin>>n;
+    int query;
+    cin>>query;
+
+    
+    int **arr = new int*[n]; //n arrays
+    int *sizes = new int [n];
+
+    for (int i=0; i<n; i++){
+        cin>>sizes[i];
+        arr[i] = new int[sizes[i]];
+
+        for (int j=0; j<sizes[i]; j++){
+            cin>>arr[i][j];
+        }
+    }
+    
+    for (int i=0; i<query; i++){
+        int x,y;
+        cin>>x>>y;
+        cout<<arr[x][y]<<endl;
+    
+    }
+    for (int i = 0; i < n; i++) {
+        delete[] arr[i];
+    }
+    delete[] arr;
+    delete[] sizes;
 }
