@@ -1,51 +1,36 @@
-#include <cmath>
-#include <cstdio>
-#include <vector>
-#include <iostream>
-#include <algorithm>
-#include <cassert>
+#include<iostream>
+#include<string.h>
+#include<cctype>
 using namespace std;
-class Student{
-    public:
-    int marks[5];
+int main(){
 
-void input(){
-    for (int i=0; i<5; i++){
-        cin>>marks[i];
-    }
-}
-int calculateTotalScore(){
-    int score=0;
-    for (int i=0; i<5; i++){
-        score = score + marks[i];
-    }
-    return score;
-}
-};
+    string guess;
+    string words[3] = {"gold", "water", "pillow"};
+    string hints[3] = {"metal used for jewellery", "essential liquid", "gives comfort to head while sleeping"};
+    for (int i=0; i<3; i++){
+        int attempts = 6;
+        cout<<"Hint: "<<hints[i]<<endl;
+        for (int j=0; j<words[i].length(); j++){
+            cout<<"_ ";
+        }
+        cout<<endl;
+       
 
-int main() {
-    int n; // number of students
-    cin >> n;
-    Student *s = new Student[n]; // an array of n students
-    
-    for(int i = 0; i < n; i++){
-        s[i].input();
-    }
-
-    // calculate kristen's score
-    int kristen_score = s[0].calculateTotalScore();
-
-    // determine how many students scored higher than kristen
-    int count = 0; 
-    for(int i = 1; i < n; i++){
-        int total = s[i].calculateTotalScore();
-        if(total > kristen_score){
-            count++;
+        while (attempts>0){
+            cout<<"Guess the word!"<<endl;
+            cin>>guess;
+            if (guess==words[i]){
+                cout<<"Correct!"<<endl;
+                break;
+            }
+            else {
+                attempts--;
+                cout<<"Incorrect! Attempts left: "<<attempts<<endl;
+            }
+        }
+        if (attempts==0){
+            cout<<"Game over! The correct word was: "<<words[i]<<endl;
+        }
         }
     }
 
-    // print result
-    cout << count;
-    
-    return 0;
-}
