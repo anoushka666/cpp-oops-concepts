@@ -1,21 +1,40 @@
-#include <iostream>
+#include<iostream>
 using namespace std;
-template <class T, int max>
-int arrMin(T arr[], int n)
-{
-int m = max;
-for (int i = 0; i < n; i++)
-if (arr[i] < m)
-m = arr[i];
-return m;
+template <class T>
+void returnMaxPair(T a, T b, T c){
+    T sum;
+    if ((a+b)> (b+c) && (a+b)>(c+a)){
+        sum = a+b;
+    }
+    else if ((b+c)> (a+b) && (b+c)>(a+c)){
+        sum = b+c;
+    }
+    else {
+        sum = a+c;
+    }
+    cout<<"Highest sum: "<<sum<<endl;
 }
-int main()
-{
-int arr1[] = {10, 20, 15, 12};
-int n1 = sizeof(arr1)/sizeof(arr1[0]);
-char arr2[] = {1, 2, 3};
-int n2 = sizeof(arr2)/sizeof(arr2[0]);
-cout << arrMin<int, 10000>(arr1, n1) << endl;
-cout << arrMin<char, 256>(arr2, n2);
-return 0;
+template <class T>
+void findMinMax(T arr[], int size, T &minVal, T &maxVal){
+    minVal = arr[0];
+    maxVal = arr[0];
+
+    for (int i=1; i<size; i++){
+        if (arr[i]<minVal){
+            minVal = arr[i];
+        }
+        if (arr[i]>maxVal){
+            maxVal = arr[i];
+        }
+    }
+    cout<<"Minimum value = "<<minVal<<endl;
+    cout<<"Maximum value = "<<maxVal<<endl;
+}
+int main(){
+    returnMaxPair(2,3,1);
+    returnMaxPair(1.5, 3.5, 2.5);
+    int arr1[] = {4,7,1,9,3};
+    int minInt, maxInt;
+    findMinMax(arr1, 5, minInt, maxInt);
+
 }
