@@ -1,54 +1,59 @@
-//to add elements of various data types 
-#include<iostream>
-using namespace std;
-template <class T>
-class AddElements{
-    public:
-    T element;
- 
-    AddElements(T a){
-        element = a;
-    }
-    T add( T b){
-        return element + b;
-    }
-};
-template <>
+//Operator Overloading
 
-class AddElements<string>{
-    public:
-    string element;
-    AddElements(string a){
-        element = a;
-    }
-    string concatenate(string b){
-        return element + b;
+#include<iostream>
+
+using namespace std;
+
+class Complex
+{
+public:
+    int a,b;
+    void input(string s)
+    {
+        int v1=0;
+        int i=0;
+        while(s[i]!='+')
+        {
+            v1=v1*10+s[i]-'0';
+            i++;
+        }
+        while(s[i]==' ' || s[i]=='+'||s[i]=='i')
+        {
+            i++;
+        }
+        int v2=0;
+        while(i<s.length())
+        {
+            v2=v2*10+s[i]-'0';
+            i++;
+        }
+        a=v1;
+        b=v2;
     }
 };
-int main(){
-int n,i;
-  cin >> n;
-  for(i=0;i<n;i++) {
-    string type;
-    cin >> type;
-    if(type=="float") {
-        double element1,element2;
-        cin >> element1 >> element2;
-        AddElements<double> myfloat (element1);
-        cout << myfloat.add(element2) << endl;
-    }
-    else if(type == "int") {
-        int element1, element2;
-        cin >> element1 >> element2;
-        AddElements<int> myint (element1);
-        cout << myint.add(element2) << endl;
-    }
-    else if(type == "string") {
-        string element1, element2;
-        cin >> element1 >> element2;
-        AddElements<string> mystring (element1);
-        cout << mystring.concatenate(element2) << endl;
-    }
-  }
-  return 0;
+Complex operator+(Complex c1, Complex c2){
+    Complex temp;
+    temp.a = c1.a + c2.a;
+    temp.b = c1.b + c2.b;
+    return temp; 
+}
+ostream& operator<<(ostream& out, const Complex& c){
+out<<c.a<<"+i"<<c.b;
+    return out;
+}
+//Overload operators + and << for the class complex
+//+ should add two complex numbers as (a+ib) + (c+id) = (a+c) + i(b+d)
+
+
+
+int main()
+{
+    Complex x,y;
+    string s1,s2;
+    cin>>s1;
+    cin>>s2;
+    x.input(s1);
+    y.input(s2);
+    Complex z=x+y;
+    cout<<z<<endl;
 }
