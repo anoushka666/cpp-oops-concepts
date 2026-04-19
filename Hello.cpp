@@ -1,59 +1,51 @@
-//Operator Overloading
-
-#include<iostream>
-
+#include <iostream>
+#include <string>
+#include <sstream>
+#include <exception>
 using namespace std;
 
-class Complex
-{
-public:
-    int a,b;
-    void input(string s)
-    {
-        int v1=0;
-        int i=0;
-        while(s[i]!='+')
-        {
-            v1=v1*10+s[i]-'0';
-            i++;
-        }
-        while(s[i]==' ' || s[i]=='+'||s[i]=='i')
-        {
-            i++;
-        }
-        int v2=0;
-        while(i<s.length())
-        {
-            v2=v2*10+s[i]-'0';
-            i++;
-        }
-        a=v1;
-        b=v2;
+/* Define the exception here */
+class BadLengthException{
+    int len;
+    public:
+    BadLengthException(int l){
+        len = l;
+        
+    }
+    int what(){
+        return len;
     }
 };
-Complex operator+(Complex c1, Complex c2){
-    Complex temp;
-    temp.a = c1.a + c2.a;
-    temp.b = c1.b + c2.b;
-    return temp; 
+
+bool checkUsername(string username) {
+	bool isValid = true;
+	int n = username.length();
+	if(n < 5) {
+		throw BadLengthException(n);
+	}
+	for(int i = 0; i < n-1; i++) {
+		if(username[i] == 'w' && username[i+1] == 'w') {
+			isValid = false;
+		}
+	}
+	return isValid;
 }
-ostream& operator<<(ostream& out, const Complex& c){
-out<<c.a<<"+i"<<c.b;
-    return out;
-}
-//Overload operators + and << for the class complex
-//+ should add two complex numbers as (a+ib) + (c+id) = (a+c) + i(b+d)
 
-
-
-int main()
-{
-    Complex x,y;
-    string s1,s2;
-    cin>>s1;
-    cin>>s2;
-    x.input(s1);
-    y.input(s2);
-    Complex z=x+y;
-    cout<<z<<endl;
+int main() {
+	int T; cin >> T;
+	while(T--) {
+		string username;
+		cin >> username;
+		try {
+			bool isValid = checkUsername(username);
+			if(isValid) {
+				cout << "Valid" << '\n';
+			} else {
+				cout << "Invalid" << '\n';
+			}
+		} catch (BadLengthException e) {
+			cout << "Too short: " << e.what() << '\n';
+		}
+	}
+	return 0;
 }
