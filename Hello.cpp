@@ -1,51 +1,79 @@
+#include <cmath>
+#include <cstdio>
+#include <vector>
 #include <iostream>
-#include <string>
-#include <sstream>
-#include <exception>
+#include <algorithm>
 using namespace std;
 
-/* Define the exception here */
-class BadLengthException{
-    int len;
+class Person{
     public:
-    BadLengthException(int l){
-        len = l;
-        
+    string name;
+    int age;
+    virtual void getdata(){}
+    virtual void putdata(){}
+};
+class Professor: public Person{
+    public:
+    int publications;
+    int cur_id;
+    static int id_counter;
+    Professor() {
+        cur_id = ++id_counter;
     }
-    int what(){
-        return len;
+    void getdata(){
+        cin>>name>>age>>publications;
+    }
+    void putdata(){
+        cout<<name<<" "<<age<<" "<<publications<<" "<<cur_id<<endl;
     }
 };
+int Professor:: id_counter=0;
 
-bool checkUsername(string username) {
-	bool isValid = true;
-	int n = username.length();
-	if(n < 5) {
-		throw BadLengthException(n);
-	}
-	for(int i = 0; i < n-1; i++) {
-		if(username[i] == 'w' && username[i+1] == 'w') {
-			isValid = false;
-		}
-	}
-	return isValid;
-}
+class Student: public Person{
+    public:
+    int marks[6];
+    int cur_id;
+    static int id_counter;
+    int sum=0;
+     Student() {
+        cur_id = ++id_counter;
+    }
+    void getdata(){
+        cin>>name>>age;
+        for (int i=0; i<6; i++){
+            cin>>marks[i];
+            sum = sum + marks[i];
+        }
+       
+    }
+    void putdata(){
+        cout<<name<<" "<<age<<" "<<sum<<" "<<cur_id<<endl;
+    }
+};
+int Student:: id_counter=0;
+int main(){
 
-int main() {
-	int T; cin >> T;
-	while(T--) {
-		string username;
-		cin >> username;
-		try {
-			bool isValid = checkUsername(username);
-			if(isValid) {
-				cout << "Valid" << '\n';
-			} else {
-				cout << "Invalid" << '\n';
-			}
-		} catch (BadLengthException e) {
-			cout << "Too short: " << e.what() << '\n';
-		}
-	}
-	return 0;
+    int n, val;
+    cin>>n; //The number of objects that is going to be created.
+    Person *per[n];
+
+    for(int i = 0;i < n;i++){
+
+        cin>>val;
+        if(val == 1){
+            // If val is 1 current object is of type Professor
+            per[i] = new Professor;
+
+        }
+        else per[i] = new Student; // Else the current object is of type Student
+
+        per[i]->getdata(); // Get the data from the user.
+
+    }
+
+    for(int i=0;i<n;i++)
+        per[i]->putdata(); // Print the required output for each object.
+
+    return 0;
+
 }
