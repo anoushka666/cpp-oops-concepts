@@ -1,79 +1,26 @@
-#include <cmath>
-#include <cstdio>
-#include <vector>
-#include <iostream>
-#include <algorithm>
+#include<iostream>
 using namespace std;
 
-class Person{
-    public:
-    string name;
-    int age;
-    virtual void getdata(){}
-    virtual void putdata(){}
+struct Node{
+    int data;
+    Node* next;
 };
-class Professor: public Person{
-    public:
-    int publications;
-    int cur_id;
-    static int id_counter;
-    Professor() {
-        cur_id = ++id_counter;
-    }
-    void getdata(){
-        cin>>name>>age>>publications;
-    }
-    void putdata(){
-        cout<<name<<" "<<age<<" "<<publications<<" "<<cur_id<<endl;
-    }
-};
-int Professor:: id_counter=0;
-
-class Student: public Person{
-    public:
-    int marks[6];
-    int cur_id;
-    static int id_counter;
-    int sum=0;
-     Student() {
-        cur_id = ++id_counter;
-    }
-    void getdata(){
-        cin>>name>>age;
-        for (int i=0; i<6; i++){
-            cin>>marks[i];
-            sum = sum + marks[i];
-        }
-       
-    }
-    void putdata(){
-        cout<<name<<" "<<age<<" "<<sum<<" "<<cur_id<<endl;
-    }
-};
-int Student:: id_counter=0;
 int main(){
+    //create nodes 
+    Node* head = new Node{2,nullptr};
+    Node* second = new Node{3,nullptr};
+    Node* third = new Node{4, nullptr};
+    Node* fourth = new Node{5, nullptr};
 
-    int n, val;
-    cin>>n; //The number of objects that is going to be created.
-    Person *per[n];
-
-    for(int i = 0;i < n;i++){
-
-        cin>>val;
-        if(val == 1){
-            // If val is 1 current object is of type Professor
-            per[i] = new Professor;
-
-        }
-        else per[i] = new Student; // Else the current object is of type Student
-
-        per[i]->getdata(); // Get the data from the user.
-
+    //link nodes
+    head->next = second;
+    second->next = third;
+    third->next = fourth;
+    
+    //print linked list 
+    Node *temp = head;
+    while (temp!=nullptr){
+        cout<<temp->data<<" ";
+        temp = temp->next;
     }
-
-    for(int i=0;i<n;i++)
-        per[i]->putdata(); // Print the required output for each object.
-
-    return 0;
-
 }
