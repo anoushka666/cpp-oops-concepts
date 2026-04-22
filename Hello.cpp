@@ -1,50 +1,39 @@
 #include<iostream>
 using namespace std;
-class Person{
+class Student{
     public:
     string name;
-    Person(string n){
+    Student(string n){
         name = n;
-        cout<<"I am a person"<<endl;
-        }
-    virtual void display(){
-        cout<<"Name: "<<name<<endl;
+    }
+    virtual void show(){
+        cout<<"Student Name: "<<name<<endl;
     }
 };
-class Employee: public Person{
+class Teacher{
     public:
-    double salary;
-    Employee(string n, double s): Person(n){
-        salary = s;
-        cout<<"I am employee"<<endl;
+    string name;
+    Teacher(string n){
+        name = n;
     }
-    void display() override {
-        cout<<"Name: "<<name<<endl;
-        cout<<"Salary: "<<salary<<endl;
+    virtual void show(){
+        cout<<"Teacher Name: "<<name<<endl;
+    }
+    
+};
+class TeachingAssistant: public Student, public Teacher{
+    public:
+    TeachingAssistant(string s, string t): Student(s), Teacher(t){}
+        void show() override{
+        cout<<"Student Name: "<<Student::name<<endl;
+        cout<<"Teacher Name: "<<Teacher::name<<endl;
+    }
 
-    }
-};
-class Manager: public Employee{
-    public:
-    int teamsize;
-    Manager(string n, int s, int t): Employee(n, s){
-        teamsize = t;
-        cout<<"I am manager"<<endl;
-    }
-     void display() override{
-        cout<<"Name: "<<name<<endl;
-        cout<<"Salary: "<<salary<<endl;
-        cout<<"Team size: "<<teamsize<<endl;
-    }
 };
 int main(){
-Person *p1 = new Person("Anoushka");
-p1->display();
-Person *p2 = new Employee("Abhay", 10000);
-p2->display();
-Person *p3 = new Manager("Vertika", 50000, 3);
-p3->display();
-delete p1;
-delete p2;
-delete p3;
+    TeachingAssistant t1("anoushka", "anoushka");
+    t1.show();
+    t1.Student::show();
+    t1.Teacher::show();
+    
 }
