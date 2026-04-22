@@ -1,40 +1,50 @@
 #include<iostream>
 using namespace std;
+class Person{
+    public:
+    string name;
+    Person(string n){
+        name = n;
+        cout<<"I am a person"<<endl;
+        }
+    virtual void display(){
+        cout<<"Name: "<<name<<endl;
+    }
+};
+class Employee: public Person{
+    public:
+    double salary;
+    Employee(string n, double s): Person(n){
+        salary = s;
+        cout<<"I am employee"<<endl;
+    }
+    void display() override {
+        cout<<"Name: "<<name<<endl;
+        cout<<"Salary: "<<salary<<endl;
 
-struct Node{
-    int data;
-    Node* next;
+    }
+};
+class Manager: public Employee{
+    public:
+    int teamsize;
+    Manager(string n, int s, int t): Employee(n, s){
+        teamsize = t;
+        cout<<"I am manager"<<endl;
+    }
+     void display() override{
+        cout<<"Name: "<<name<<endl;
+        cout<<"Salary: "<<salary<<endl;
+        cout<<"Team size: "<<teamsize<<endl;
+    }
 };
 int main(){
-    //create nodes
-    Node* head = new Node{2,nullptr};
-    Node* second = new Node{3, nullptr};
-    Node* third = new Node{4, nullptr};
-    Node* fourth = new Node{5, nullptr};
-
-    //link the nodes
-    head->next = second;
-    second->next = third;
-    third->next = fourth;
-
-    //print the linked list 
-    Node* temp = head;
-    while (temp!= nullptr){
-        cout<<temp->data<<" ";
-        temp = temp->next;
-    }
-
-    cout<<endl<<"After inserting 0 at the beginning"<<endl;
-
-    //insert at the beginning 
-    Node* n = new Node{1};
-    n->next = head;
-    head = n;
-
-    //print the new linked list 
-    Node* temp1 = head;
-    while (temp1!= nullptr){
-        cout<<temp1->data<<" ";
-        temp1 = temp1->next;
-    }
+Person *p1 = new Person("Anoushka");
+p1->display();
+Person *p2 = new Employee("Abhay", 10000);
+p2->display();
+Person *p3 = new Manager("Vertika", 50000, 3);
+p3->display();
+delete p1;
+delete p2;
+delete p3;
 }
