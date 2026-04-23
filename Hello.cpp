@@ -1,147 +1,159 @@
 #include <iostream>
 #include <iomanip>
-#include <string>
-#include <algorithm>
-#include <vector>
-#include <limits>
-
 using namespace std;
 
-const int SUBJECTS = 6;
-const int TOTAL_SUBJECTS = SUBJECTS + 1;
 
-struct Student {
-    string name;
-    int roll;
-    float marks[SUBJECTS];
-    int lecturesAttended;
-    float sgpa;
+struct Node {
+    int coeff;
+    int exp;
+    Node* next;
+
+    Node(int c, int e) : coeff(c), exp(e), next(nullptr) {}
 };
 
 
-float calculateSGPA(const Student &s, const float credits[SUBJECTS], int totalLectures, float attendanceWeight) {
-    float totalWeightedScore = 0.0f;
-    float totalCredits = 0.0f;
+class Polynomial {
+private:
+    Node* head;
 
+    void insertTerm(int coeff, int exp) {
+        if (coeff == 0) return;
 
-    for (int i = 0; i < SUBJECTS; i++) {
-        totalWeightedScore += s.marks[i] * credits[i];
-        totalCredits += credits[i];
-    }
+        Node* newNode = new Node(coeff, exp);
 
-    float attendancePercent = (totalLectures > 0) ? (float)s.lecturesAttended / totalLectures * 100.0f : 0.0f;
-    totalWeightedScore += attendancePercent * attendanceWeight;
-    totalCredits += attendanceWeight;
-
-
-    return (totalWeightedScore / totalCredits) / 10.0f;
-}
-
-
-void displayStudent(const Student &s) {
-    cout << left << setw(15) << s.name
-         << setw(10) << s.roll
-         << setw(10) << fixed << setprecision(2) << s.sgpa << endl;
-}
-
-
-void searchAboveThreshold(const vector<Student> &students, float threshold) {
-    cout << "\nStudents with SGPA above " << threshold << ":\n";
-    for (const auto &s : students) {
-        if (s.sgpa > threshold) displayStudent(s);
-    }
-}
-
-
-void searchFailures(const vector<Student> &students) {
-    cout << "\nStudents who failed in any subject:\n";
-    for (const auto &s : students) {
-        bool failed = false;
-        for (float mark : s.marks) {
-            if (mark < 40) { failed = true; break; }
+        if (!head || exp > head->exp) {
+            newNode->next = head;
+            head = newNode;
+            return;
         }
-        if (failed) displayStudent(s);
-    }
-}
+
+        Node* curr = head;
+        Node* prev = nullptr;
 
 
-void highestInSubject(const vector<Student> &students, int subjectIndex) {
-    if (subjectIndex < 0 || subjectIndex >= SUBJECTS) {
-        cout << "Invalid subject index.\n";
-        return;
-    }
-    float maxScore = -1;
-    for (const auto &s : students) {
-        if (s.marks[subjectIndex] > maxScore) {
-            maxScore = s.marks[subjectIndex];
+        while (curr && curr->exp > exp) {
+            prev = curr;
+            curr = curr->next;
+        }
+
+
+        if (curr && curr->exp == exp) {
+            curr->coeff += coeff;
+            delete newNode;
+            if (curr->coeff == 0) {
+                if (prev) prev->next = curr->next;
+                else head = curr->next;
+                delete curr;
+            }
+        } else {
+
+            newNode->next = curr;
+            if (prev) prev->next = newNode;
+            else head = newNode;
         }
     }
-    cout << "\nHighest scorer(s) in Subject " << subjectIndex + 1 << ":\n";
-    for (const auto &s : students) {
-        if (s.marks[subjectIndex] == maxScore) displayStudent(s);
+
+public:
+    Polynomial() : head(nullptr) {}
+
+    void addTerm(int coeff, int exp) {
+        insertTerm(coeff, exp);
     }
-}
+
+
+    void display() const {
+        if (!head) {
+            cout << "0";
+            return;
+        }
+        Node* curr = head;
+        bool firstTerm = true;
+        while (curr) {
+            if (!firstTerm && curr->coeff > 0) cout << " + ";
+            if (curr->coeff < 0) cout << " - ";
+
+            int absCoeff = abs(curr->coeff);
+            if (absCoeff != 1 || curr->exp == 0) cout << absCoeff;
+            if (curr->exp > 0) {
+                cout << "x";
+                if (curr->exp > 1) cout << "^" << curr->exp;
+            }
+            firstTerm = false;
+            curr = curr->next;
+        }
+    }
+
+
+    Polynomial add(const Polynomial& other) const {
+        Polynomial result;
+        Node* p1 = head;
+        Node* p2 = other.head;
+
+        while (p1) {
+            result.insertTerm(p1->coeff, p1->exp);
+            p1 = p1->next;
+        }
+        while (p2) {
+            result.insertTerm(p2->coeff, p2->exp);
+            p2 = p2->next;
+        }
+        return result;
+    }
+
+    Polynomial multiply(const Polynomial& other) const {
+        Polynomial result;
+        for (Node* p1 = head; p1 != nullptr; p1 = p1->next) {
+            for (Node* p2 = other.head; p2 != nullptr; p2 = p2->next) {
+                result.insertTerm(p1->coeff * p2->coeff, p1->exp + p2->exp);
+            }
+        }
+        return result;
+    }
+
+
+    ~Polynomial() {
+        while (head) {
+            Node* temp = head;
+            head = head->next;
+            delete temp;
+        }
+    }
+};
+
 
 int main() {
-    int N, totalLectures;
-    cout << "Enter number of students: ";
-    cin >> N;
-    cout << "Enter total number of lectures: ";
-    cin >> totalLectures;
-
-    vector<Student> students(N);
-    float credits[SUBJECTS];
-    cout << "Enter credit weight for each of the 6 subjects:\n";
-    for (int i = 0; i < SUBJECTS; i++) {
-        cin >> credits[i];
-    }
-    float attendanceWeight;
-    cout << "Enter fixed weight for attendance: ";
-    cin >> attendanceWeight;
+    Polynomial poly1, poly2;
 
 
-    for (int i = 0; i < N; i++) {
-        cout << "\nEnter details for student " << i + 1 << ":\n";
-        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Clear buffer
-        cout << "Name: ";
-        getline(cin, students[i].name);
-        cout << "Roll Number: ";
-        cin >> students[i].roll;
-        cout << "Enter marks for 6 subjects: ";
-        for (int j = 0; j < SUBJECTS; j++) {
-            cin >> students[i].marks[j];
-        }
-        cout << "Lectures attended: ";
-        cin >> students[i].lecturesAttended;
-
-
-        students[i].sgpa = calculateSGPA(students[i], credits, totalLectures, attendanceWeight);
+    cout << "Enter first polynomial terms (coeff exp), end with 0 0:\n";
+    while (true) {
+        int c, e;
+        cin >> c >> e;
+        if (c == 0 && e == 0) break;
+        poly1.addTerm(c, e);
     }
 
-
-    sort(students.begin(), students.end(), [](const Student &a, const Student &b) {
-        return a.sgpa > b.sgpa;
-    });
-
-
-    cout << "\nRanked Students (by SGPA + Attendance):\n";
-    cout << left << setw(15) << "Name" << setw(10) << "Roll" << setw(10) << "SGPA" << endl;
-    for (const auto &s : students) {
-        displayStudent(s);
+    cout << "Enter second polynomial terms (coeff exp), end with 0 0:\n";
+    while (true) {
+        int c, e;
+        cin >> c >> e;
+        if (c == 0 && e == 0) break;
+        poly2.addTerm(c, e);
     }
 
+    cout << "\nFirst Polynomial: ";
+    poly1.display();
+    cout << "\nSecond Polynomial: ";
+    poly2.display();
 
-    float threshold;
-    cout << "\nEnter SGPA threshold to search: ";
-    cin >> threshold;
-    searchAboveThreshold(students, threshold);
+    Polynomial sum = poly1.add(poly2);
+    Polynomial product = poly1.multiply(poly2);
 
-    searchFailures(students);
-
-    int subjectIndex;
-    cout << "\nEnter subject index (1-6) to find highest scorer: ";
-    cin >> subjectIndex;
-    highestInSubject(students, subjectIndex - 1);
+    cout << "\n\nSum: ";
+    sum.display();
+    cout << "\nProduct: ";
+    product.display();
+    cout << endl;
 
     return 0;
 }
