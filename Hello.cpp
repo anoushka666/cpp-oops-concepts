@@ -1,107 +1,147 @@
 #include <iostream>
+#include <iomanip>
+#include <string>
+#include <algorithm>
 #include <vector>
 #include <limits>
 
 using namespace std;
 
-void generateSubsets(const vector<int>& arr, vector<int>& current, int index) {
+const int SUBJECTS = 6;
+const int TOTAL_SUBJECTS = SUBJECTS + 1;
 
-    if (index == arr.size()) {
-        cout << "{ ";
-        for (size_t i = 0; i < current.size(); ++i) {
-            cout << current[i];
-            if (i < current.size() - 1) cout << ", ";
-        }
-        cout << " }" << endl;
-        return;
+struct Student {
+    string name;
+    int roll;
+    float marks[SUBJECTS];
+    int lecturesAttended;
+    float sgpa;
+};
+
+
+float calculateSGPA(const Student &s, const float credits[SUBJECTS], int totalLectures, float attendanceWeight) {
+    float totalWeightedScore = 0.0f;
+    float totalCredits = 0.0f;
+
+
+    for (int i = 0; i < SUBJECTS; i++) {
+        totalWeightedScore += s.marks[i] * credits[i];
+        totalCredits += credits[i];
     }
 
+    float attendancePercent = (totalLectures > 0) ? (float)s.lecturesAttended / totalLectures * 100.0f : 0.0f;
+    totalWeightedScore += attendancePercent * attendanceWeight;
+    totalCredits += attendanceWeight;
 
-    current.push_back(arr[index]);
-    generateSubsets(arr, current, index + 1);
+
+    return (totalWeightedScore / totalCredits) / 10.0f;
+}
 
 
-    current.pop_back();
-    generateSubsets(arr, current, index + 1);
+void displayStudent(const Student &s) {
+    cout << left << setw(15) << s.name
+         << setw(10) << s.roll
+         << setw(10) << fixed << setprecision(2) << s.sgpa << endl;
+}
+
+
+void searchAboveThreshold(const vector<Student> &students, float threshold) {
+    cout << "\nStudents with SGPA above " << threshold << ":\n";
+    for (const auto &s : students) {
+        if (s.sgpa > threshold) displayStudent(s);
+    }
+}
+
+
+void searchFailures(const vector<Student> &students) {
+    cout << "\nStudents who failed in any subject:\n";
+    for (const auto &s : students) {
+        bool failed = false;
+        for (float mark : s.marks) {
+            if (mark < 40) { failed = true; break; }
+        }
+        if (failed) displayStudent(s);
+    }
+}
+
+
+void highestInSubject(const vector<Student> &students, int subjectIndex) {
+    if (subjectIndex < 0 || subjectIndex >= SUBJECTS) {
+        cout << "Invalid subject index.\n";
+        return;
+    }
+    float maxScore = -1;
+    for (const auto &s : students) {
+        if (s.marks[subjectIndex] > maxScore) {
+            maxScore = s.marks[subjectIndex];
+        }
+    }
+    cout << "\nHighest scorer(s) in Subject " << subjectIndex + 1 << ":\n";
+    for (const auto &s : students) {
+        if (s.marks[subjectIndex] == maxScore) displayStudent(s);
+    }
 }
 
 int main() {
-    int n;
-    cout << "Enter number of elements in the array: ";
+    int N, totalLectures;
+    cout << "Enter number of students: ";
+    cin >> N;
+    cout << "Enter total number of lectures: ";
+    cin >> totalLectures;
 
-    #include <iostream>
-#include <vector>
-#include <limits>
+    vector<Student> students(N);
+    float credits[SUBJECTS];
+    cout << "Enter credit weight for each of the 6 subjects:\n";
+    for (int i = 0; i < SUBJECTS; i++) {
+        cin >> credits[i];
+    }
+    float attendanceWeight;
+    cout << "Enter fixed weight for attendance: ";
+    cin >> attendanceWeight;
 
-using namespace std;
 
-// Recursive function to generate all subsets
-void generateSubsets(const vector<int>& arr, vector<int>& current, int index) {
-    // Base case: if index reaches the end, print the current subset
-    if (index == arr.size()) {
-        cout << "{ ";
-        for (size_t i = 0; i < current.size(); ++i) {
-            cout << current[i];
-            if (i < current.size() - 1) cout << ", ";
+    for (int i = 0; i < N; i++) {
+        cout << "\nEnter details for student " << i + 1 << ":\n";
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Clear buffer
+        cout << "Name: ";
+        getline(cin, students[i].name);
+        cout << "Roll Number: ";
+        cin >> students[i].roll;
+        cout << "Enter marks for 6 subjects: ";
+        for (int j = 0; j < SUBJECTS; j++) {
+            cin >> students[i].marks[j];
         }
-        cout << " }" << endl;
-        return;
+        cout << "Lectures attended: ";
+        cin >> students[i].lecturesAttended;
+
+
+        students[i].sgpa = calculateSGPA(students[i], credits, totalLectures, attendanceWeight);
     }
 
-    // Include the current element
-    current.push_back(arr[index]);
-    generateSubsets(arr, current, index + 1);
 
-    // Exclude the current element (backtrack)
-    current.pop_back();
-    generateSubsets(arr, current, index + 1);
-}
+    sort(students.begin(), students.end(), [](const Student &a, const Student &b) {
+        return a.sgpa > b.sgpa;
+    });
 
-int main() {
-    int n;
-    cout << "Enter number of elements in the array: ";
-    
-    // Validate input for size
-    if (!(cin >> n) || n < 0) {
-        cerr << "Invalid input. Please enter a non-negative integer." << endl;
-        return 1;
+
+    cout << "\nRanked Students (by SGPA + Attendance):\n";
+    cout << left << setw(15) << "Name" << setw(10) << "Roll" << setw(10) << "SGPA" << endl;
+    for (const auto &s : students) {
+        displayStudent(s);
     }
 
-    vector<int> arr(n);
-    cout << "Enter " << n << " integers: ";
-    for (int i = 0; i < n; ++i) {
-        while (!(cin >> arr[i])) {
-            cerr << "Invalid input. Please enter an integer: ";
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        }
-    }
 
-    cout << "\nAll subsets:\n";
-    vector<int> current;
-    generateSubsets(arr, current, 0);
+    float threshold;
+    cout << "\nEnter SGPA threshold to search: ";
+    cin >> threshold;
+    searchAboveThreshold(students, threshold);
 
-    return 0;
-}
+    searchFailures(students);
 
-    if (!(cin >> n) || n < 0) {
-        cerr << "Invalid input. Please enter a non-negative integer." << endl;
-        return 1;
-    }
-
-    vector<int> arr(n);
-    cout << "Enter " << n << " integers: ";
-    for (int i = 0; i < n; ++i) {
-        while (!(cin >> arr[i])) {
-            cerr << "Invalid input. Please enter an integer: ";
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        }
-    }
-
-    cout << "\nAll subsets:\n";
-    vector<int> current;
-    generateSubsets(arr, current, 0);
+    int subjectIndex;
+    cout << "\nEnter subject index (1-6) to find highest scorer: ";
+    cin >> subjectIndex;
+    highestInSubject(students, subjectIndex - 1);
 
     return 0;
 }
