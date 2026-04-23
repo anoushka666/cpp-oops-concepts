@@ -1,51 +1,107 @@
 #include <iostream>
+#include <vector>
 #include <limits>
+
 using namespace std;
 
-bool isSortedDescending(const int arr[], int n) {
+void generateSubsets(const vector<int>& arr, vector<int>& current, int index) {
 
-    if (n <= 1) {
-        return true;
+    if (index == arr.size()) {
+        cout << "{ ";
+        for (size_t i = 0; i < current.size(); ++i) {
+            cout << current[i];
+            if (i < current.size() - 1) cout << ", ";
+        }
+        cout << " }" << endl;
+        return;
     }
 
-    if (arr[n - 2] < arr[n - 1]) {
-        return false;
-    }
 
-    return isSortedDescending(arr, n - 1);
+    current.push_back(arr[index]);
+    generateSubsets(arr, current, index + 1);
+
+
+    current.pop_back();
+    generateSubsets(arr, current, index + 1);
 }
 
 int main() {
     int n;
-
     cout << "Enter number of elements in the array: ";
+
+    #include <iostream>
+#include <vector>
+#include <limits>
+
+using namespace std;
+
+// Recursive function to generate all subsets
+void generateSubsets(const vector<int>& arr, vector<int>& current, int index) {
+    // Base case: if index reaches the end, print the current subset
+    if (index == arr.size()) {
+        cout << "{ ";
+        for (size_t i = 0; i < current.size(); ++i) {
+            cout << current[i];
+            if (i < current.size() - 1) cout << ", ";
+        }
+        cout << " }" << endl;
+        return;
+    }
+
+    // Include the current element
+    current.push_back(arr[index]);
+    generateSubsets(arr, current, index + 1);
+
+    // Exclude the current element (backtrack)
+    current.pop_back();
+    generateSubsets(arr, current, index + 1);
+}
+
+int main() {
+    int n;
+    cout << "Enter number of elements in the array: ";
+    
+    // Validate input for size
     if (!(cin >> n) || n < 0) {
-        cout << "Invalid input. Please enter a non-negative integer.\n";
+        cerr << "Invalid input. Please enter a non-negative integer." << endl;
         return 1;
     }
 
-    if (n == 0) {
-        cout << "Empty array is considered sorted.\n";
-        return 0;
-    }
-
-    int *arr = new int[n];
-
-    cout << "Enter " << n << " integers:\n";
-    for (int i = 0; i < n; i++) {
+    vector<int> arr(n);
+    cout << "Enter " << n << " integers: ";
+    for (int i = 0; i < n; ++i) {
         while (!(cin >> arr[i])) {
-            cout << "Invalid input. Please enter an integer: ";
+            cerr << "Invalid input. Please enter an integer: ";
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
         }
     }
 
-    if (isSortedDescending(arr, n)) {
-        cout << "The array is sorted in descending order.\n";
-    } else {
-        cout << "The array is NOT sorted in descending order.\n";
+    cout << "\nAll subsets:\n";
+    vector<int> current;
+    generateSubsets(arr, current, 0);
+
+    return 0;
+}
+
+    if (!(cin >> n) || n < 0) {
+        cerr << "Invalid input. Please enter a non-negative integer." << endl;
+        return 1;
     }
 
-    delete[] arr;
+    vector<int> arr(n);
+    cout << "Enter " << n << " integers: ";
+    for (int i = 0; i < n; ++i) {
+        while (!(cin >> arr[i])) {
+            cerr << "Invalid input. Please enter an integer: ";
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
+    }
+
+    cout << "\nAll subsets:\n";
+    vector<int> current;
+    generateSubsets(arr, current, 0);
+
     return 0;
 }
