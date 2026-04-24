@@ -1,29 +1,28 @@
-//second largest element of an array 
+//to find second smallest number in an arry
 #include<iostream>
 #include<climits>
 using namespace std;
 int main(){
     int n;
-    cout<<"Enter size: ";
+    cout<<"Enter size of array: ";
     cin>>n;
     int arr[n];
-    cout<<"Enter elements: ";
+    cout<<"Enter elements of array: ";
     for (int i=0; i<n; i++){
         cin>>arr[i];
     }
+    int smallest = INT_MAX;
+    int secondsmallest = INT_MAX;
 
-    int k;
-   cout<<"Enter rotating index: ";
-   cin>>k;
-
-    k = k%n;
-    int temp[n];
     for (int i=0; i<n; i++){
-        temp[(i+k)%n] = arr[i];
+        if (arr[i]<smallest){
+            secondsmallest = smallest;
+            smallest = arr[i];
+        }
+        else if(arr[i]>smallest && arr[i]<secondsmallest){
+            secondsmallest = arr[i];
+        }
     }
-    for (int i=0; i<n; i++){
-        cout<<temp[i]<<" ";
-    }
-
+    cout<<"Second smallest element: "<<secondsmallest;
 
 }
