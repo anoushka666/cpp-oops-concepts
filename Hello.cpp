@@ -1,51 +1,53 @@
 #include<iostream>
+#include<algorithm>
+#include<vector>
 using namespace std;
-struct Node{
-    int data;
-    Node* next;
-};
-void insertAtBeginning(Node* &head, int value){
-    Node* newNode = new Node();
-    newNode->data = value;
-    newNode->next = head;
-    head = newNode;
-}
-void insertAtEnd(Node* &head, int value){
-    Node* newNode = new Node();
-    newNode->data = value;
-    newNode->next = NULL;
-    if(head==NULL){
-        head = newNode;
-        return;
-    }
-    Node* temp = head;
-    while(temp->next!=NULL){
-        temp = temp->next;
-    }
-    temp->next = newNode;
-}
-void deleteAtBeginning(Node *head){
-    if (head==NULL){
-        return;
-    }
-    Node* temp = head;
-    head = head->next;
-    delete temp;
-}
-void display(Node* head){
-    Node* temp = head;
-    while(temp!=NULL){
-        cout<<temp->data<<" ->";
-        temp = temp->next;
-    }
-    cout<<"NULL";
-}
 int main(){
-    Node *head = NULL;
-    insertAtBeginning(head, 5);
-    insertAtBeginning(head, 10);
-    insertAtBeginning(head, 15);
-    insertAtEnd(head, 20);
+    vector <int> v1;
+    int n;
+    cout<<"Enter size of vector: ";
+    cin>>n;
+    v1.resize(n);
 
-    display(head);
+    cout<<"Enter elements: ";
+    for (int i=0; i<n; i++){
+        cin>>v1[i];
+    }
+
+int index;
+cout<<"Enter index you want to remove (0-4): ";
+cin>>index;
+
+v1.erase (v1.begin() + index);
+cout<<"New vector: "<<endl;
+for (int i=0; i<v1.size(); i++){
+    cout<<v1[i]<<" ";
+}
+
+int value;
+int index2;
+cout<<"Enter value and index to inset: ";
+cin>>value>>index2;
+
+v1.insert(v1.begin()+ index2, value);
+cout<<"New vector: "<<endl;
+for (int i=0; i<v1.size(); i++){
+    cout<<v1[i]<<" ";
+}
+
+cout<<endl<<"Ascending order: "<<endl;
+sort(v1.begin(), v1.end());
+cout<<"New vector: "<<endl;
+for (int i=0; i<v1.size(); i++){
+    cout<<v1[i]<<" ";
+}
+
+cout<<endl<<"Descending order: "<<endl;
+sort(v1.begin(), v1.end(), greater<int>());
+cout<<"New vector: "<<endl;
+for (int i=0; i<v1.size(); i++){
+    cout<<v1[i]<<" ";
+}
+
+
 }
