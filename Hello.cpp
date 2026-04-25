@@ -1,53 +1,73 @@
 #include<iostream>
 #include<algorithm>
-#include<vector>
 using namespace std;
-int main(){
-    vector <int> v1;
-    int n;
-    cout<<"Enter size of vector: ";
-    cin>>n;
-    v1.resize(n);
-
-    cout<<"Enter elements: ";
-    for (int i=0; i<n; i++){
-        cin>>v1[i];
+struct Node{
+    int data;
+    Node* next;
+    Node(int val){
+        data = val;
+        next = NULL;
     }
+};
+//reverse a linked list 
+Node* reverseList(Node* head){
+    Node* prev = NULL;
+    Node* curr = head;
+    Node* next = NULL;
 
-int index;
-cout<<"Enter index you want to remove (0-4): ";
-cin>>index;
+    while(curr!=NULL){
+        next = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = next;
 
-v1.erase (v1.begin() + index);
-cout<<"New vector: "<<endl;
-for (int i=0; i<v1.size(); i++){
-    cout<<v1[i]<<" ";
+    }
+    return prev;
 }
 
-int value;
-int index2;
-cout<<"Enter value and index to inset: ";
-cin>>value>>index2;
-
-v1.insert(v1.begin()+ index2, value);
-cout<<"New vector: "<<endl;
-for (int i=0; i<v1.size(); i++){
-    cout<<v1[i]<<" ";
-}
-
-cout<<endl<<"Ascending order: "<<endl;
-sort(v1.begin(), v1.end());
-cout<<"New vector: "<<endl;
-for (int i=0; i<v1.size(); i++){
-    cout<<v1[i]<<" ";
-}
-
-cout<<endl<<"Descending order: "<<endl;
-sort(v1.begin(), v1.end(), greater<int>());
-cout<<"New vector: "<<endl;
-for (int i=0; i<v1.size(); i++){
-    cout<<v1[i]<<" ";
+//find middle node
+Node* findMiddle(Node* head){
+    Node* slow = head;
+    Node* fast = head;
+    while(fast!=NULL && fast->next != NULL){
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+    return slow;
 }
 
 
+//Floyd's algorithm 
+bool hasCycle(Node* head){
+    Node* slow = head;
+    Node* fast = head;
+
+    while (fast!=NULL && fast->next!=NULL){
+        slow = slow->next;
+        fast = fast->next->next;
+
+        if (slow==fast){
+            return true;
+        }
+      
+        }
+        return false;
+}
+int main(){
+    Node* head = new Node(1);
+    Node* second = new Node(2);
+    Node* third = new Node(3);
+    Node* fourth = new Node(4);
+
+    head->next = second;
+    second->next = third;
+    third->next = fourth;
+    fourth->next = second; //to make cycle
+
+    if(hasCycle(head)){
+        cout<<"Cycle detected"<<endl;
+    }
+    else{
+        cout<<"No cycle detected"<<endl;
+    }
 }
