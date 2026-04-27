@@ -1,34 +1,28 @@
 #include <iostream>
 #include <vector>
-#include <algorithm>
+#include <unordered_set>
 using namespace std;
 
-void replaceWithRank(vector<int>& arr) {
-    int n = arr.size();
+int maxSocksOnTable(vector<int>& arr) {
+    unordered_set<int> seen;
+    int current = 0, maxi = 0;
 
-   
-    vector<int> temp = arr;
-    sort(temp.begin(), temp.end());
-
-   
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            if (arr[i] == temp[j]) {
-                arr[i] = j + 1; 
-                break;
-            }
+    for (int x : arr) {
+        if (seen.find(x) == seen.end()) {
+            seen.insert(x);
+            current++;
+        } else {
+            
+            current--;
         }
+        maxi = max(maxi, current);
     }
+
+    return maxi;
 }
 
 int main() {
-    vector<int> arr = {40, 10, 20, 30};
-
-    replaceWithRank(arr);
-
-    for (int x : arr) {
-        cout << x << " ";
-    }
-
+    vector<int> arr = {1, 2, 1, 3, 2, 3}; 
+    cout << maxSocksOnTable(arr);
     return 0;
 }
