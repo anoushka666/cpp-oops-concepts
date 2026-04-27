@@ -1,28 +1,45 @@
 #include <iostream>
 #include <vector>
-#include <unordered_set>
+#include <algorithm>
 using namespace std;
 
-int maxSocksOnTable(vector<int>& arr) {
-    unordered_set<int> seen;
-    int current = 0, maxi = 0;
+int main() {
+    int T;
+    cin >> T;
 
-    for (int x : arr) {
-        if (seen.find(x) == seen.end()) {
-            seen.insert(x);
-            current++;
-        } else {
-            
-            current--;
+    while (T--) {
+        int Q;
+        cin >> Q;
+
+        vector<int> A;
+
+        while (Q--) {
+            char ch;
+            cin >> ch;
+
+            if (ch == 'a') {
+                int x;
+                cin >> x;
+                A.push_back(x);
+            }
+            else if (ch == 'b') {
+                sort(A.begin(), A.end()); 
+            }
+            else if (ch == 'c') {
+                reverse(A.begin(), A.end());
+            }
+            else if (ch == 'd') {
+                cout << A.size() << endl;
+            }
+            else if (ch == 'e') {
+                for (int x : A) cout << x << " ";
+                cout << endl;
+            }
+            else if (ch == 'f') {
+                sort(A.begin(), A.end(), greater<int>());
+            }
         }
-        maxi = max(maxi, current);
     }
 
-    return maxi;
-}
-
-int main() {
-    vector<int> arr = {1, 2, 1, 3, 2, 3}; 
-    cout << maxSocksOnTable(arr);
     return 0;
 }
