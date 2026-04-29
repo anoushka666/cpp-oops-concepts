@@ -68,5 +68,5 @@ int main(){
         cout<<"Rig B is the superior asset\n";
     }
 
-    return 0;
+    
 }
