@@ -69,6 +69,9 @@ class List{
         Node* curr = head;
         Node* next = NULL;
 
+        //old head becomes new tail
+        tail = head;
+
         while (curr!=NULL){
             next = curr->next;
             curr->next = prev;
@@ -76,7 +79,24 @@ class List{
             curr = next;
 
         }
+        //prev becomes new head
         head = prev;
+    }
+
+    void findMiddle(){
+        if (head==NULL){
+            cout<<"List is empty"<<endl;
+        }
+        else{
+            Node* slow = head;
+            Node* fast = head;
+
+            while (fast!=NULL && fast->next!=NULL){
+                slow = slow->next;        //moves one step
+                fast = fast->next->next;  //moves two steps
+            }
+            cout<<"Middle element: "<<slow->data<<endl;
+        }
     }
 };
 int main(){
@@ -99,4 +119,7 @@ int main(){
     cout<<"Reversal of linked list: "<<endl;
     l1.reverseLinkedlist();
     l1.print();
+    cout<<endl;
+
+    l1.findMiddle();
 }
