@@ -1,6 +1,8 @@
 #include<iostream>
 using namespace std;
 
+//include cases when the linked list is empty 
+
 class Node{
     public:
     int data;
