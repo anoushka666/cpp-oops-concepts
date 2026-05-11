@@ -1,72 +1,87 @@
 #include<iostream>
 using namespace std;
 
-class TransportUnit{
-public:
-    int load;
-    int distance;
-    int efficiency;
+class Node{
+    public:
+    int data;
+    Node* next;
 
-    void inputTransport(){
-        cout<<"Enter load: ";
-        cin>>load;
-        cout<<"Enter distance: ";
-        cin>>distance;
-        efficiency = load / distance;
+    Node(int val){
+        data = val;
+        next = NULL;
     }
 };
-
-class NetworkRelay{
-public:
-    int bandwidth;
-    int signal;
-
-    void inputRelay(int d){
-        cout<<"Enter bandwidth: ";
-        cin>>bandwidth;
-        signal = bandwidth / d;
+class List{
+    public:
+    Node* head;
+    Node* tail;
+    List(){
+        head = tail = NULL;
     }
+
+    void print(){
+        Node* temp = head;
+        while (temp!=NULL){
+            cout<<temp->data<<" ";
+            temp = temp->next;
+        }
+    }
+
+    void push_back(int val){
+        Node* newNode = new Node(val);
+        if (head==NULL){
+            head = tail = newNode;
+        }
+        else{
+            tail->next = NULL;
+            tail = newNode;
+        }
+    }
+
+    void push_front(int val){
+        Node* newNode = new Node(val);
+        if (head = NULL){
+            head = tail = newNode;
+        }
+        else{
+            newNode->next = head;
+            head = newNode;
+        }
+    }
+
+    void pop_front(){
+        if (head==NULL){
+            cout<<"Linked list is empty";
+        }
+        else{
+            Node* temp = head;
+            head = temp->next;
+            temp->next = NULL;
+            delete temp;
+        }
+    }
+
+    void pop_back(){
+        if (head==NULL){
+            cout<<"Linked list is empty";
+        }
+        else{
+            Node* temp = head;
+            while(temp->next!=tail){
+                temp = temp->next;
+            }
+            delete tail;
+            tail = temp;
+            tail->next = NULL;
+        }
+    }
+
 };
-
-class AutonomousRig : public TransportUnit, public NetworkRelay{
-public:
-    void inputRig(){
-        cout<<"\n--- Enter details for Autonomous Rig ---\n";
-        inputTransport();              
-        inputRelay(distance);          
-    }
-
-    void display(){
-        cout<<"Efficiency: "<<efficiency<<endl;
-        cout<<"Signal: "<<signal<<endl;
-    }
-};
-
-
-bool operator>(const AutonomousRig &a1, const AutonomousRig &a2){
-    return (a1.efficiency + a1.signal) > (a2.efficiency + a2.signal);
-}
-
 int main(){
-    cout<<"Evaluating fleet:\n";
-
-    AutonomousRig a1, a2;
-
-    cout<<"\nRig A:";
-    a1.inputRig();
-
-    cout<<"\nRig B:";
-    a2.inputRig();
-
-    cout<<"\n--- Results ---\n";
-    a1.display();
-    a2.display();
-
-    if(a1 > a2){
-        cout<<"Rig A is the superior asset\n";
-    } else {
-        cout<<"Rig B is the superior asset\n";
-    }
-
-    
+    List l1;
+    l1.push_front(5);
+    l1.push_back(6);
+    l1.push_back(7);
+    l1.pop_back();
+    l1.print();
 }
