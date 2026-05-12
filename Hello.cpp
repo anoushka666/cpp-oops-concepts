@@ -1,60 +1,54 @@
 #include<iostream>
 #include<queue>
-#include<string>
+#include<stack>
 using namespace std;
 
-class Task{
-    public:
-    string name;
-    int duration;
-    
-    Task(string n, int d){
-        name = n;
-        duration = d;
+void reverseKelements(queue<int>& q, int k){
+
+    stack<int> s;
+
+    // Put first k elements into stack
+    for(int i=0; i<k; i++){
+
+        s.push(q.front());
+        q.pop();
     }
-};
 
-//function to stimulate CPU scheduling 
-void stimulateCPU(queue<Task> q, int t){
-    while (!q.empty()){
-        Task current = q.front();
-        q.pop();    //removes the task from queue
+    // Put reversed elements back into queue
+    while(!s.empty()){
 
-        //if task completes 
-        if (current.duration<=t){
-            cout<<"Task "<<current.name<<" executed and completed"<<endl;
-        }
-        //if task needs more time
-        else{
-            current.duration = current.duration - t;
-            cout<<"Task "<<current.name<<" executed for "<<t<<" units, ";
-            cout<<current.duration<<" units remaining"<<endl;
+        q.push(s.top());
+        s.pop();
+    }
 
-        //reinsert into queue
-        q.push(current);
-        }
+    // Move remaining elements to back
+    int remaining = q.size() - k;
+
+    for(int i=0; i<remaining; i++){
+
+        q.push(q.front());
+        q.pop();
     }
 }
+
 int main(){
-    int n;
-    cout<<"Enter number of tasks: ";
-    cin>>n;
 
-    queue<Task> q;
-    for (int i=0; i<n; i++){
-        string name;
-        int duration;
+    queue<int> q;
 
-        cout<<"Enter task name: ";
-        cin>>name;
-        cout<<"Enter task duration: ";
-        cin>>duration;
-        
-        q.push(Task(name, duration));
+    q.push(10);
+    q.push(20);
+    q.push(30);
+    q.push(40);
+    q.push(50);
+
+    int k = 3;
+
+    reverseKelements(q, k);
+
+    // Print queue
+    while(!q.empty()){
+
+        cout << q.front() << " ";
+        q.pop();
     }
-    int t;
-    cout<<"Enter time slice: ";
-    cin>>t;
-
-    stimulateCPU(q,t);
 }
