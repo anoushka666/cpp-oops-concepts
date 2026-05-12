@@ -1,54 +1,37 @@
 #include<iostream>
-#include<queue>
-#include<stack>
 using namespace std;
+class PetrolPump{
+    public:
+    int petrol;
+    int distance;
+};
 
-void reverseKelements(queue<int>& q, int k){
+int circularTour( PetrolPump p[], int n){
+    int balance = 0;
+    int deficit = 0;
+    int start = 0;
 
-    stack<int> s;
+    for (int i=0; i<n; i++){
+        balance = balance + p[i].petrol - p[i].distance;
 
-    // Put first k elements into stack
-    for(int i=0; i<k; i++){
-
-        s.push(q.front());
-        q.pop();
+        //cannot continue 
+        if (balance<0){
+            deficit = deficit + balance;
+            start = i+1;
+            balance = 0;
+        }
     }
-
-    // Put reversed elements back into queue
-    while(!s.empty()){
-
-        q.push(s.top());
-        s.pop();
+    //check if tour is possible 
+    if (balance + deficit >=0){
+        return start;
     }
-
-    // Move remaining elements to back
-    int remaining = q.size() - k;
-
-    for(int i=0; i<remaining; i++){
-
-        q.push(q.front());
-        q.pop();
-    }
+    //if impossible 
+    return -1;
 }
-
 int main(){
-
-    queue<int> q;
-
-    q.push(10);
-    q.push(20);
-    q.push(30);
-    q.push(40);
-    q.push(50);
-
-    int k = 3;
-
-    reverseKelements(q, k);
-
-    // Print queue
-    while(!q.empty()){
-
-        cout << q.front() << " ";
-        q.pop();
-    }
+    PetrolPump p[] = {
+        {6,4}, {3,6}, {7,3}
+    };
+    int n = 3;
+    cout<<"Start from pump index: "<<circularTour(p, n);
 }
