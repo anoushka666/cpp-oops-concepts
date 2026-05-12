@@ -1,37 +1,31 @@
 #include<iostream>
+#include<set>
 using namespace std;
-class PetrolPump{
-    public:
-    int petrol;
-    int distance;
-};
+int maxSockonTable(int arr[], int size){
+    set<int> table;
+    int current = 0;
+    int maximum = 0;
 
-int circularTour( PetrolPump p[], int n){
-    int balance = 0;
-    int deficit = 0;
-    int start = 0;
+    for (int i=0; i<size; i++){
+        //first sock
+        if (table.find(arr[i])== table.end()){
+            table.insert(arr[i]);
+            current++;
+        }
+        //pair found
+        else{
+            table.erase(arr[i]);
+            current--;
 
-    for (int i=0; i<n; i++){
-        balance = balance + p[i].petrol - p[i].distance;
-
-        //cannot continue 
-        if (balance<0){
-            deficit = deficit + balance;
-            start = i+1;
-            balance = 0;
+        }
+        if (current>maximum){
+            maximum = current;
         }
     }
-    //check if tour is possible 
-    if (balance + deficit >=0){
-        return start;
-    }
-    //if impossible 
-    return -1;
+    return maximum;
 }
 int main(){
-    PetrolPump p[] = {
-        {6,4}, {3,6}, {7,3}
-    };
-    int n = 3;
-    cout<<"Start from pump index: "<<circularTour(p, n);
+    int arr[] = {1,2,1,3,2,3};
+    int size = 6;
+    cout<<"Maximum socks on the table: "<<maxSockonTable(arr, size);
 }
