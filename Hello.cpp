@@ -1,41 +1,60 @@
 #include<iostream>
+#include<queue>
+#include<string>
 using namespace std;
 
-class Node{
+class Task{
     public:
-    int data;
-    Node* next;
-    Node* prev;
-
-    Node(int val){
-        data = val;
-        next = orev = NULL;
+    string name;
+    int duration;
+    
+    Task(string n, int d){
+        name = n;
+        duration = d;
     }
 };
 
-class List{
-    public:
-    Node* head;
-    Node* tail;
+//function to stimulate CPU scheduling 
+void stimulateCPU(queue<Task> q, int t){
+    while (!q.empty()){
+        Task current = q.front();
+        q.pop();    //removes the task from queue
 
-    List(){
-        head = tail = NULL;
-    }
-bool isPalindrome(){
-    Node* start = head;
-    Node* end = tail;
-
-    while (start !=end && start->prev != end){
-        if (start-> data != end->data){
-            return false;
+        //if task completes 
+        if (current.duration<=t){
+            cout<<"Task "<<current.name<<" executed and completed"<<endl;
         }
-        start = start->next;
-        end = end->next;
+        //if task needs more time
+        else{
+            current.duration = current.duration - t;
+            cout<<"Task "<<current.name<<" executed for "<<t<<" units, ";
+            cout<<current.duration<<" units remaining"<<endl;
+
+        //reinsert into queue
+        q.push(current);
+        }
     }
-    return true;
 }
-};
 int main(){
+    int n;
+    cout<<"Enter number of tasks: ";
+    cin>>n;
 
+    queue<Task> q;
+    for (int i=0; i<n; i++){
+        string name;
+        int duration;
 
+        cout<<"Enter task name: ";
+        cin>>name;
+        cout<<"Enter task duration: ";
+        cin>>duration;
+        
+        q.push(Task(name, duration));
+    }
+    int t;
+    cout<<"Enter time slice: ";
+    cin>>t;
+
+    stimulateCPU(q,t);
 }
