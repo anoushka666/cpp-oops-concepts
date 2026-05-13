@@ -1,55 +1,24 @@
-#include <iostream>
-#include <stack>
-#include <string>
+#include<iostream>
+#include<stack>
+#include<queue>
 using namespace std;
 
-// Function to check balanced brackets
-bool isBalanced(string expr) {
+//reverse a string using stack
+int main(){
+    string str;
+    cout<<"enter string: ";
+    cin>>str;
+
     stack<char> s;
-
-    for (int i = 0; i < expr.length(); i++) {
-        char ch = expr[i];
-
-        // Push opening brackets
-        if (ch == '(' || ch == '{' || ch == '[') {
-            s.push(ch);
-        }
-
-        // Check closing brackets
-        else if (ch == ')' || ch == '}' || ch == ']') {
-
-            // If stack is empty
-            if (s.empty()) {
-                return false;
-            }
-
-            char top = s.top();
-            s.pop();
-
-            // Matching conditions
-            if ((ch == ')' && top != '(') ||
-                (ch == '}' && top != '{') ||
-                (ch == ']' && top != '[')) {
-                return false;
-            }
-        }
+    //push all elements of string into stack 
+    for (int i=0; i<str.length(); i++){
+        s.push(str[i]);
     }
 
-    // If stack becomes empty → balanced
-    return s.empty();
-}
+    //print stack 
+    while(!s.empty()){
+        cout<<s.top();
+        s.pop();
 
-int main() {
-    string expr;
-
-    cout << "Enter expression: ";
-    cin >> expr;
-
-    if (isBalanced(expr)) {
-        cout << "Balanced Expression" << endl;
-    } else {
-        cout << "Not Balanced Expression" << endl;
     }
-
-    return 0;
 }
