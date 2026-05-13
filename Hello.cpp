@@ -1,31 +1,55 @@
-#include<iostream>
-#include<set>
+#include <iostream>
+#include <stack>
+#include <string>
 using namespace std;
-int maxSockonTable(int arr[], int size){
-    set<int> table;
-    int current = 0;
-    int maximum = 0;
 
-    for (int i=0; i<size; i++){
-        //first sock
-        if (table.find(arr[i])== table.end()){
-            table.insert(arr[i]);
-            current++;
-        }
-        //pair found
-        else{
-            table.erase(arr[i]);
-            current--;
+// Function to check balanced brackets
+bool isBalanced(string expr) {
+    stack<char> s;
 
+    for (int i = 0; i < expr.length(); i++) {
+        char ch = expr[i];
+
+        // Push opening brackets
+        if (ch == '(' || ch == '{' || ch == '[') {
+            s.push(ch);
         }
-        if (current>maximum){
-            maximum = current;
+
+        // Check closing brackets
+        else if (ch == ')' || ch == '}' || ch == ']') {
+
+            // If stack is empty
+            if (s.empty()) {
+                return false;
+            }
+
+            char top = s.top();
+            s.pop();
+
+            // Matching conditions
+            if ((ch == ')' && top != '(') ||
+                (ch == '}' && top != '{') ||
+                (ch == ']' && top != '[')) {
+                return false;
+            }
         }
     }
-    return maximum;
+
+    // If stack becomes empty → balanced
+    return s.empty();
 }
-int main(){
-    int arr[] = {1,2,1,3,2,3};
-    int size = 6;
-    cout<<"Maximum socks on the table: "<<maxSockonTable(arr, size);
+
+int main() {
+    string expr;
+
+    cout << "Enter expression: ";
+    cin >> expr;
+
+    if (isBalanced(expr)) {
+        cout << "Balanced Expression" << endl;
+    } else {
+        cout << "Not Balanced Expression" << endl;
+    }
+
+    return 0;
 }
